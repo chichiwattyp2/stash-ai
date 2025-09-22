@@ -5,6 +5,9 @@
 
 import {GoogleGenAI, Modality, GenerateContentResponse} from '@google/genai';
 
+// --- Constants ---
+const STASH_LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2gAAAB5CAMAAAC3vj9AAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAllBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6TqcCAAAAMnRSTlMA+hL5A/UnBvH28I52fWg/Lh8V6uG8n4t1b2RgW0k/JOnk4dzY1M/NzMXAu6+ro52bmXt3d2pZUEA9MzEgGxsLBwIB/aH2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SUhFB+YLFBEyD/8SctwAAAWlSURBVHja7dzrdtu2FAbgFxC45JxzB0hISAgJgQRAAv//f6k6s1l2Xy2Ppwfpae17bC+2WJk+5eGHw+FwOBwOh8PhcDgci/EwDOPk/D58v+P32/f/g2GkKqWGUqU0lKmln1K5tJSmpZZSqZTS0Eqp0h+lViqlNdRSqtQilVLKRyslK1LdK1JbpZ6VK2UvUrFKNStZydqUqVStZCVrV6ZWtZKVrl2ZytZKVrp2ZWrbKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrp-ghAAAAABJRU5ErkJggg==';
+
 // --- DOM Element References ---
 const designStudioPage = document.getElementById('design-studio-page') as HTMLElement;
 const brandKitPage = document.getElementById('brand-kit-page') as HTMLElement;
@@ -12,6 +15,7 @@ const automationPage = document.getElementById('automation-page') as HTMLElement
 const navDesignStudio = document.getElementById('nav-design-studio') as HTMLButtonElement;
 const navBrandKit = document.getElementById('nav-brand-kit') as HTMLButtonElement;
 const navAutomation = document.getElementById('nav-automation') as HTMLButtonElement;
+const themeSwitcherButtons = document.querySelectorAll('.theme-switcher button');
 
 // Design Studio Elements
 const imageUploadArea = document.getElementById('image-upload-area') as HTMLDivElement;
@@ -37,6 +41,7 @@ const logoUploadInput = document.getElementById('logo-upload-input') as HTMLInpu
 const brandLogosContainer = document.getElementById('brand-logos-container') as HTMLDivElement;
 
 // Brand Kit - Product Catalog Elements
+const bulkProductUploadInput = document.getElementById('bulk-product-upload') as HTMLInputElement;
 const newProductImageArea = document.getElementById('new-product-image-area') as HTMLDivElement;
 const newProductImageUpload = document.getElementById('new-product-image-upload') as HTMLInputElement;
 const newProductImageText = document.getElementById('new-product-image-text') as HTMLSpanElement;
@@ -53,8 +58,8 @@ const templatePreviewContainer = document.getElementById('template-preview-conta
 
 // Template Modal Elements
 const templateModal = document.getElementById('template-modal') as HTMLDivElement;
+let templateModalInstance: any; // MDC Dialog instance
 const templateModalTitle = document.getElementById('template-modal-title') as HTMLHeadingElement;
-const closeTemplateModalBtn = document.getElementById('close-template-modal-btn') as HTMLButtonElement;
 const templateIdInput = document.getElementById('template-id-input') as HTMLInputElement;
 const templateNameInput = document.getElementById('template-name-input') as HTMLInputElement;
 const templatePromptInput = document.getElementById('template-prompt-input') as HTMLTextAreaElement;
@@ -143,10 +148,10 @@ const updateLoadingState = (loading: boolean) => {
     generateBtnText.classList.add('hidden');
     generateSpinner.classList.remove('hidden');
     generatedImageContainer.innerHTML = `
-      <div class="flex flex-col items-center justify-center text-gray-400 h-full">
-          <i class="fa-solid fa-spinner animate-spin text-4xl mb-4"></i>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--md-sys-color-on-surface-variant); height: 100%;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
           <p>Our AI designer is crafting your image...</p>
-          <p class="text-sm text-gray-500">This can take a moment.</p>
+          <p style="font-size: 0.875rem; color: var(--md-sys-color-outline);">This can take a moment.</p>
       </div>`;
     downloadBtn.classList.add('hidden');
   } else {
@@ -159,16 +164,19 @@ const displayImage = (container: HTMLElement, base64: string, mimeType: string) 
   container.innerHTML = '';
   const img = document.createElement('img');
   img.src = `data:${mimeType};base64,${base64}`;
-  img.className = 'w-full h-full object-contain rounded-md';
+  img.style.width = '100%';
+  img.style.height = '100%';
+  img.style.objectFit = 'contain';
+  img.style.borderRadius = '8px';
   container.appendChild(img);
 };
 
 const showError = (container: HTMLElement, message: string) => {
   container.innerHTML = `
-    <div class="flex flex-col items-center justify-center text-red-400 p-4 h-full">
-        <i class="fa-solid fa-circle-exclamation text-4xl mb-4"></i>
-        <p class="font-semibold">An Error Occurred</p>
-        <p class="text-sm text-center">${message}</p>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--md-sys-color-error); padding: 1rem; height: 100%; text-align: center;">
+        <i class="fas fa-circle-exclamation" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+        <p style="font-weight: 600;">An Error Occurred</p>
+        <p style="font-size: 0.875rem;">${message}</p>
     </div>`;
 };
 
@@ -192,9 +200,24 @@ const loadFromLocalStorage = (key: string, defaultValue: any) => {
 }
 
 // --- Brand Kit Functions ---
-const saveBrandKit = () => saveToLocalStorage('stashBrandKit', brandKit);
+const saveGuidelines = () => saveToLocalStorage('stashBrandKit_guidelines', brandKit.guidelines);
+const saveColors = () => saveToLocalStorage('stashBrandKit_colors', brandKit.colors);
+const saveLogos = () => saveToLocalStorage('stashBrandKit_logos', brandKit.logos);
+const saveProducts = () => saveToLocalStorage('stashBrandKit_products', brandKit.products);
+const saveTemplates = () => saveToLocalStorage('stashBrandKit_templates', brandKit.templates);
+
 const loadBrandKit = () => {
-    brandKit = loadFromLocalStorage('stashBrandKit', { guidelines: '', colors: [], logos: [], products: [], templates: [] });
+    brandKit.guidelines = loadFromLocalStorage('stashBrandKit_guidelines', '');
+    brandKit.colors = loadFromLocalStorage('stashBrandKit_colors', []);
+    brandKit.logos = loadFromLocalStorage('stashBrandKit_logos', []);
+    brandKit.products = loadFromLocalStorage('stashBrandKit_products', []);
+    brandKit.templates = loadFromLocalStorage('stashBrandKit_templates', []);
+
+    // Pre-load Stash logo if none exist
+    if (brandKit.logos.length === 0) {
+        brandKit.logos.push(STASH_LOGO_BASE64);
+        saveLogos(); // Save only the logos
+    }
 };
 const saveAutomationState = () => saveToLocalStorage('stashAutomationState', automationState);
 const loadAutomationState = () => {
@@ -209,26 +232,45 @@ const loadAutomationHistory = () => {
 const renderSelectableLogos = () => {
   logoSelectionContainer.innerHTML = '';
   const noLogoOption = document.createElement('div');
-  noLogoOption.className = 'aspect-square bg-gray-800 rounded-md flex items-center justify-center cursor-pointer p-2 border-2 border-cyan-400';
-  noLogoOption.innerHTML = `<span class="text-xs text-center text-gray-400">No Logo</span>`;
+  noLogoOption.style.aspectRatio = '1/1';
+  noLogoOption.style.backgroundColor = 'var(--md-sys-color-surface-container-high)';
+  noLogoOption.style.borderRadius = '8px';
+  noLogoOption.style.display = 'flex';
+  noLogoOption.style.alignItems = 'center';
+  noLogoOption.style.justifyContent = 'center';
+  noLogoOption.style.padding = '0.5rem';
+  noLogoOption.style.cursor = 'pointer';
+  noLogoOption.style.border = '2px solid var(--md-sys-color-primary)';
+  noLogoOption.innerHTML = `<span style="font-size: 0.75rem; text-align: center; color: var(--md-sys-color-on-surface-variant);">No Logo</span>`;
   noLogoOption.onclick = () => {
     selectedLogoBase64 = null;
-    document.querySelectorAll('#logo-selection-container > div').forEach(el => el.classList.remove('border-cyan-400'));
-    noLogoOption.classList.add('border-cyan-400');
+    document.querySelectorAll('#logo-selection-container > div').forEach(el => (el as HTMLElement).style.borderColor = 'transparent');
+    noLogoOption.style.borderColor = 'var(--md-sys-color-primary)';
   };
   logoSelectionContainer.appendChild(noLogoOption);
 
   brandKit.logos.forEach(logoData => {
     const logoOption = document.createElement('div');
-    logoOption.className = 'aspect-square bg-gray-800 rounded-md flex items-center justify-center cursor-pointer p-2 border-2 border-transparent hover:border-cyan-300';
+    logoOption.style.aspectRatio = '1/1';
+    logoOption.style.backgroundColor = 'var(--md-sys-color-surface-container-high)';
+    logoOption.style.borderRadius = '8px';
+    logoOption.style.display = 'flex';
+    logoOption.style.alignItems = 'center';
+    logoOption.style.justifyContent = 'center';
+    logoOption.style.padding = '0.5rem';
+    logoOption.style.cursor = 'pointer';
+    logoOption.style.border = '2px solid transparent';
+
     const img = document.createElement('img');
     img.src = logoData;
-    img.className = 'w-full h-full object-contain';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
     logoOption.appendChild(img);
     logoOption.onclick = () => {
       selectedLogoBase64 = logoData;
-      document.querySelectorAll('#logo-selection-container > div').forEach(el => el.classList.remove('border-cyan-400'));
-      logoOption.classList.add('border-cyan-400');
+      document.querySelectorAll('#logo-selection-container > div').forEach(el => (el as HTMLElement).style.borderColor = 'transparent');
+      logoOption.style.borderColor = 'var(--md-sys-color-primary)';
     };
     logoSelectionContainer.appendChild(logoOption);
   });
@@ -239,14 +281,15 @@ const renderProductCatalog = () => {
     productCatalogContainer.innerHTML = '';
     brandKit.products.forEach(product => {
         const card = document.createElement('div');
-        card.className = 'relative bg-gray-700 rounded-lg shadow-lg overflow-hidden group';
+        card.className = 'mdc-card mdc-card--outlined';
+        card.style.position = 'relative';
         card.innerHTML = `
-            <img src="data:${product.imageMimeType};base64,${product.imageBase64}" class="w-full h-24 object-cover">
-            <div class="p-2">
-                <p class="font-bold text-sm truncate">${product.name}</p>
+            <div style="height: 6rem; background-image: url(data:${product.imageMimeType};base64,${product.imageBase64}); background-size: cover; background-position: center;"></div>
+            <div style="padding: 0.5rem;">
+                <p class="mdc-typography--subtitle2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--md-sys-color-on-surface-variant);">${product.name}</p>
             </div>
-            <button data-product-id="${product.id}" class="remove-product-btn absolute top-1 right-1 bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                <i class="fa-solid fa-times"></i>
+            <button data-product-id="${product.id}" class="remove-product-btn mdc-icon-button material-icons" style="position: absolute; top: 0.25rem; right: 0.25rem; color: var(--md-sys-color-error);">
+                delete
             </button>
         `;
         productCatalogContainer.appendChild(card);
@@ -256,7 +299,7 @@ const renderProductCatalog = () => {
         btn.addEventListener('click', (e) => {
             const productId = parseInt((e.currentTarget as HTMLButtonElement).dataset.productId, 10);
             brandKit.products = brandKit.products.filter(p => p.id !== productId);
-            saveBrandKit();
+            saveProducts();
             renderProductCatalog();
         });
     });
@@ -267,7 +310,7 @@ const renderProductCatalog = () => {
 const renderTemplatePreview = () => {
     if (selectedTemplateId === null) {
         templatePreviewContainer.innerHTML = `
-            <div class="flex items-center justify-center h-full text-gray-500">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--md-sys-color-on-surface-variant);">
                 Select a template to see a preview.
             </div>`;
         return;
@@ -283,28 +326,34 @@ const renderTemplatePreview = () => {
     const placeholders = template.prompt.match(/\[(.*?)\]/g) || [];
 
     // Highlight placeholders in prompt
-    const highlightedPrompt = template.prompt.replace(/\[(.*?)\]/g, '<code class="bg-cyan-900 text-cyan-300 px-1 rounded-sm">$&</code>');
+    const highlightedPrompt = template.prompt.replace(/\[(.*?)\]/g, '<code style="background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); padding: 2px 4px; border-radius: 4px;">$&</code>');
 
     templatePreviewContainer.innerHTML = `
-        <div class="flex flex-col h-full">
-            <h3 class="text-xl font-bold text-white mb-4 truncate">${template.name}</h3>
-            <div class="flex-grow bg-gray-800 rounded-lg p-4 overflow-y-auto">
-                <p class="text-gray-300 whitespace-pre-wrap font-mono text-sm">${highlightedPrompt}</p>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+            <h3 class="mdc-typography--headline6" style="margin-bottom: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--md-sys-color-on-surface);">${template.name}</h3>
+            <div style="flex-grow: 1; background-color: var(--md-sys-color-surface-container-lowest); border-radius: 8px; padding: 1rem; overflow-y: auto;">
+                <p style="white-space: pre-wrap; font-family: monospace; font-size: 0.875rem; color: var(--md-sys-color-on-surface-variant);">${highlightedPrompt}</p>
             </div>
             ${placeholders.length > 0 ? `
-            <div class="mt-4">
-                <h4 class="font-semibold text-gray-400 mb-2">Placeholders:</h4>
-                <div class="flex flex-wrap gap-2">
-                    ${placeholders.map(p => `<span class="bg-gray-700 text-xs text-gray-300 px-2 py-1 rounded-full">${p}</span>`).join('')}
+            <div style="margin-top: 1rem;">
+                <h4 class="mdc-typography--subtitle1" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 0.5rem;">Placeholders:</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    ${placeholders.map(p => `<span style="background-color: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); font-size: 0.75rem; padding: 4px 8px; border-radius: 16px;">${p}</span>`).join('')}
                 </div>
             </div>
             ` : ''}
-            <button data-template-id="${template.id}" class="use-template-btn mt-6 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition">Use This Template</button>
+            <button data-template-id="${template.id}" class="use-template-btn mdc-button mdc-button--raised" style="margin-top: 1.5rem; width: 100%;">
+              <span class="mdc-button__label">Use This Template</span>
+            </button>
         </div>
     `;
 
     document.querySelector('.use-template-btn')?.addEventListener('click', () => {
         promptInput.value = template.prompt;
+        // Need to update the Material text field label state
+        const promptField = (window as any).mdc.textField.MDCTextField.attachTo(document.getElementById('prompt-input-field'));
+        promptField.value = template.prompt;
+        
         navigateTo('design-studio');
     });
 };
@@ -314,20 +363,25 @@ const renderTemplateList = () => {
     const filteredTemplates = brandKit.templates.filter(t => t.name.toLowerCase().includes(searchTerm));
 
     if (filteredTemplates.length === 0) {
-        templateListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No templates found.</div>`;
+        templateListContainer.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--md-sys-color-on-surface-variant);">No templates found.</div>`;
         return;
     }
 
     templateListContainer.innerHTML = '';
     filteredTemplates.forEach(template => {
         const item = document.createElement('div');
-        item.className = `p-4 cursor-pointer hover:bg-gray-700 border-l-4 ${selectedTemplateId === template.id ? 'bg-gray-700 border-cyan-400' : 'border-transparent'}`;
+        const isActive = selectedTemplateId === template.id;
+        item.style.padding = '1rem';
+        item.style.cursor = 'pointer';
+        item.style.borderLeft = `4px solid ${isActive ? 'var(--md-sys-color-primary)' : 'transparent'}`;
+        item.style.backgroundColor = isActive ? 'var(--md-sys-color-surface-container-high)' : 'transparent';
+
         item.innerHTML = `
-            <p class="font-semibold text-white truncate">${template.name}</p>
-            <p class="text-sm text-gray-400 truncate">${template.prompt}</p>
-            <div class="text-right mt-2">
-                 <button data-template-id="${template.id}" class="edit-template-btn text-gray-400 hover:text-white text-xs mr-2"><i class="fa-solid fa-pencil"></i> Edit</button>
-                 <button data-template-id="${template.id}" class="delete-template-btn text-red-500 hover:text-red-400 text-xs"><i class="fa-solid fa-trash"></i> Delete</button>
+            <p class="mdc-typography--subtitle1" style="color: var(--md-sys-color-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.name}</p>
+            <p class="mdc-typography--body2" style="color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.prompt}</p>
+            <div style="text-align: right; margin-top: 0.5rem;">
+                 <button data-template-id="${template.id}" class="edit-template-btn mdc-button">Edit</button>
+                 <button data-template-id="${template.id}" class="delete-template-btn mdc-button">Delete</button>
             </div>
         `;
         item.addEventListener('click', (e) => {
@@ -356,7 +410,7 @@ const renderTemplateList = () => {
                 if (selectedTemplateId === templateId) {
                     selectedTemplateId = null;
                 }
-                saveBrandKit();
+                saveTemplates();
                 renderTemplateList();
                 renderTemplatePreview();
             }
@@ -378,11 +432,12 @@ const openTemplateModal = (id: number | null = null) => {
         templateNameInput.value = '';
         templatePromptInput.value = '';
     }
-    templateModal.classList.remove('hidden');
-};
-
-const closeTemplateModal = () => {
-    templateModal.classList.add('hidden');
+     // Update MDC text fields
+    document.querySelectorAll('#template-modal .mdc-text-field').forEach(el => {
+        const field = (window as any).mdc.textField.MDCTextField.attachTo(el);
+        field.value = (el.querySelector('input, textarea') as HTMLInputElement).value;
+    });
+    templateModalInstance.open();
 };
 
 const handleSaveTemplate = () => {
@@ -404,9 +459,9 @@ const handleSaveTemplate = () => {
         brandKit.templates.push({ id: Date.now(), name, prompt });
     }
 
-    saveBrandKit();
+    saveTemplates();
     renderTemplateList();
-    closeTemplateModal();
+    templateModalInstance.close();
 };
 
 const renderBrandKitUI = () => {
@@ -415,14 +470,26 @@ const renderBrandKitUI = () => {
     brandColorsContainer.innerHTML = '';
     brandKit.colors.forEach((color, index) => {
         const swatch = document.createElement('div');
-        swatch.className = 'relative w-16 h-16 rounded-md border-2 border-gray-600';
+        swatch.style.position = 'relative';
+        swatch.style.width = '4rem';
+        swatch.style.height = '4rem';
+        swatch.style.borderRadius = '8px';
+        swatch.style.border = '2px solid var(--md-sys-color-outline)';
         swatch.style.backgroundColor = color;
         const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
-        removeBtn.className = 'absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs';
+        removeBtn.innerHTML = 'close';
+        removeBtn.className = 'mdc-icon-button material-icons';
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '-0.75rem';
+        removeBtn.style.right = '-0.75rem';
+        removeBtn.style.backgroundColor = 'var(--md-sys-color-error-container)';
+        removeBtn.style.color = 'var(--md-sys-color-on-error-container)';
+        removeBtn.style.width = '24px';
+        removeBtn.style.height = '24px';
+
         removeBtn.onclick = () => {
             brandKit.colors.splice(index, 1);
-            saveBrandKit();
+            saveColors();
             renderBrandKitUI();
         };
         swatch.appendChild(removeBtn);
@@ -432,17 +499,28 @@ const renderBrandKitUI = () => {
     brandLogosContainer.innerHTML = '';
     brandKit.logos.forEach((logoData, index) => {
         const logoWrapper = document.createElement('div');
-        logoWrapper.className = 'relative p-2 bg-gray-700 rounded-lg';
+        logoWrapper.className = 'mdc-card mdc-card--outlined';
+        logoWrapper.style.position = 'relative';
+        logoWrapper.style.padding = '0.5rem';
         const img = document.createElement('img');
         img.src = logoData;
-        img.className = 'w-full h-full object-contain';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'contain';
         logoWrapper.appendChild(img);
         const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
-        removeBtn.className = 'absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs';
+        removeBtn.innerHTML = 'close';
+        removeBtn.className = 'mdc-icon-button material-icons';
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '0';
+        removeBtn.style.right = '0';
+        removeBtn.style.backgroundColor = 'var(--md-sys-color-error-container)';
+        removeBtn.style.color = 'var(--md-sys-color-on-error-container)';
+        removeBtn.style.width = '24px';
+        removeBtn.style.height = '24px';
         removeBtn.onclick = () => {
             brandKit.logos.splice(index, 1);
-            saveBrandKit();
+            saveLogos();
             renderBrandKitUI();
         };
         logoWrapper.appendChild(removeBtn);
@@ -579,9 +657,59 @@ const handleLogoUpload = async (files: FileList) => {
             }
         }
     }
-    saveBrandKit();
+    saveLogos();
     renderBrandKitUI();
 };
+
+const handleBulkProductUpload = async (files: FileList) => {
+    if (files.length === 0) return;
+
+    alert(`Processing ${files.length} files. This may take a moment...`);
+
+    const newProducts: Product[] = [];
+    const processingPromises = Array.from(files).map(async (file) => {
+        if (!file.type.startsWith('image/')) {
+            console.warn(`Skipping non-image file: ${file.name}`);
+            return; // Skip non-image files
+        }
+
+        try {
+            // 1. Parse filename
+            const fileNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
+            const parts = fileNameWithoutExt.split('_');
+            const name = (parts[0] || 'Untitled Product').replace(/-/g, ' ');
+            const description = (parts.slice(1).join('_') || '').replace(/-/g, ' ');
+
+            // 2. Convert file to base64
+            const { data, mimeType } = await fileToGenerativePart(file);
+
+            // 3. Create product object
+            const newProduct: Product = {
+                id: Date.now() + Math.random(), // Add random to avoid collision in fast loops
+                name,
+                description,
+                imageBase64: data,
+                imageMimeType: mimeType,
+            };
+            newProducts.push(newProduct);
+        } catch (e) {
+            console.error(`Failed to process file ${file.name}:`, e);
+        }
+    });
+
+    await Promise.all(processingPromises);
+
+    if (newProducts.length > 0) {
+        brandKit.products.push(...newProducts);
+        saveProducts();
+        renderProductCatalog();
+        alert(`${newProducts.length} products were successfully added!`);
+    }
+
+    // Reset the file input
+    if (bulkProductUploadInput) bulkProductUploadInput.value = '';
+};
+
 
 // --- Automation Functions ---
 const renderAutomationUI = () => {
@@ -591,27 +719,29 @@ const renderAutomationUI = () => {
     // Render toggle button and status
     automationStatusText.textContent = automationState.enabled ? 'Enabled' : 'Disabled';
     automationBtnText.textContent = automationState.enabled ? 'Disable Daily Automation' : 'Enable Daily Automation';
-    automationToggleBtn.classList.toggle('bg-red-600', automationState.enabled);
-    automationToggleBtn.classList.toggle('hover:bg-red-700', automationState.enabled);
-    automationToggleBtn.classList.toggle('bg-green-600', !automationState.enabled);
-    automationToggleBtn.classList.toggle('hover:bg-green-700', !automationState.enabled);
-    automationStatusIndicator.classList.toggle('bg-green-500', automationState.enabled);
-    automationStatusIndicator.classList.toggle('bg-gray-500', !automationState.enabled);
+    if(automationState.enabled) {
+        automationToggleBtn.style.backgroundColor = 'var(--md-sys-color-error)';
+        automationToggleBtn.style.color = 'var(--md-sys-color-on-error)';
+    } else {
+        automationToggleBtn.style.backgroundColor = 'var(--md-sys-color-primary)';
+        automationToggleBtn.style.color = 'var(--md-sys-color-on-primary)';
+    }
+    automationStatusIndicator.style.backgroundColor = automationState.enabled ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline)';
 
 
     // Render history
     automationHistoryContainer.innerHTML = '';
     if (automationHistory.length === 0) {
-        automationHistoryContainer.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">No designs generated yet.</div>`;
+        automationHistoryContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--md-sys-color-on-surface-variant); padding: 2rem;">No designs generated yet.</div>`;
     } else {
         [...automationHistory].reverse().forEach(item => {
             const card = document.createElement('div');
-            card.className = 'bg-gray-700 rounded-lg shadow-lg overflow-hidden';
+            card.className = 'mdc-card mdc-card--outlined';
             card.innerHTML = `
-                <img src="data:${item.imageMimeType};base64,${item.imageBase64}" class="w-full h-40 object-cover">
-                <div class="p-3">
-                    <p class="font-bold text-sm">${new Date(item.date).toLocaleDateString()}</p>
-                    <p class="text-xs text-gray-400 truncate" title="${item.prompt}">${item.prompt}</p>
+                <div style="height: 10rem; background-image: url(data:${item.imageMimeType};base64,${item.imageBase64}); background-size: cover; background-position: center;"></div>
+                <div style="padding: 0.75rem;">
+                    <p class="mdc-typography--subtitle1">${new Date(item.date).toLocaleDateString()}</p>
+                    <p class="mdc-typography--body2" style="color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.prompt}">${item.prompt}</p>
                 </div>
             `;
             automationHistoryContainer.appendChild(card);
@@ -629,19 +759,19 @@ const runDailyAutomation = async () => {
     }
 
     if (!automationState.prompt || brandKit.products.length === 0) {
-        todayStatusContainer.innerHTML = `<p class="text-yellow-400">Automation is enabled, but setup is incomplete. Please add a prompt and at least one product to the <strong>Product Catalog</strong> in your Brand Kit.</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-error);">Automation is enabled, but setup is incomplete. Please add a prompt and at least one product to the <strong>Product Catalog</strong> in your Brand Kit.</p>`;
         return;
     }
 
     const hasRunToday = automationHistory.some(h => h.date === today);
     if (hasRunToday) {
-        todayStatusContainer.innerHTML = `<p class="text-green-400"><i class="fa-solid fa-check-circle mr-2"></i>Today's design has already been generated.</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Today's design has already been generated.</p>`;
         return;
     }
 
     todayStatusContainer.innerHTML = `
-        <div class="flex items-center text-cyan-400">
-            <i class="fa-solid fa-spinner animate-spin mr-2"></i>
+        <div style="display: flex; align-items: center; color: var(--md-sys-color-primary);">
+            <div class="mdc-circular-progress mdc-circular-progress--indeterminate" style="width:24px;height:24px; margin-right: 1rem;" role="progressbar"><div class="mdc-circular-progress__determinate-container"><svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24"><circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/></svg></div><div class="mdc-circular-progress__indeterminate-container"><div class="mdc-circular-progress__spinner-layer"><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div><div class="mdc-circular-progress__gap-patch"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div></div></div></div>
             <span>Generating design for ${today}...</span>
         </div>`;
     
@@ -683,45 +813,39 @@ const runDailyAutomation = async () => {
         });
         saveAutomationHistory();
         renderAutomationUI();
-        todayStatusContainer.innerHTML = `<p class="text-green-400"><i class="fa-solid fa-check-circle mr-2"></i>Successfully generated today's design!</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Successfully generated today's design!</p>`;
     } else {
-        todayStatusContainer.innerHTML = `<p class="text-red-400"><i class="fa-solid fa-exclamation-circle mr-2"></i>Failed to generate today's design. Error: ${result.error}</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-error);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">error</i>Failed to generate today's design. Error: ${result.error}</p>`;
     }
 };
 
 
 // --- Event Listeners Setup ---
 const pages = {
-  'design-studio': { page: designStudioPage, nav: navDesignStudio },
-  'brand-kit': { page: brandKitPage, nav: navBrandKit },
-  'automation': { page: automationPage, nav: navAutomation },
+  'design-studio': { page: designStudioPage },
+  'brand-kit': { page: brandKitPage },
+  'automation': { page: automationPage },
 };
 
 const navigateTo = (pageKey: keyof typeof pages) => {
-  Object.entries(pages).forEach(([key, { page, nav }]) => {
-    const isActive = key === pageKey;
-    page.classList.toggle('hidden', !isActive);
-    nav.classList.toggle('text-cyan-400', isActive);
-    nav.classList.toggle('font-semibold', isActive);
-    nav.classList.toggle('text-gray-300', !isActive);
+  Object.values(pages).forEach(({ page }) => {
+    page.classList.remove('active');
   });
+  pages[pageKey].page.classList.add('active');
+
    if (pageKey === 'design-studio') {
         renderSelectableLogos();
     }
 };
 
-Object.entries(pages).forEach(([key, { nav }]) => {
-  nav.addEventListener('click', () => navigateTo(key as keyof typeof pages));
-});
-
 
 // Design Studio Listeners
 imageUploadArea.addEventListener('click', () => imageUploadInput.click());
-imageUploadArea.addEventListener('dragover', (e) => { e.preventDefault(); imageUploadArea.classList.add('border-cyan-400', 'bg-gray-700'); });
-imageUploadArea.addEventListener('dragleave', (e) => { e.preventDefault(); imageUploadArea.classList.remove('border-cyan-400', 'bg-gray-700'); });
+imageUploadArea.addEventListener('dragover', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'var(--md-sys-color-surface-container-high)'; });
+imageUploadArea.addEventListener('dragleave', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'transparent'; });
 imageUploadArea.addEventListener('drop', (e) => {
   e.preventDefault();
-  imageUploadArea.classList.remove('border-cyan-400', 'bg-gray-700');
+  imageUploadArea.style.backgroundColor = 'transparent';
   if (e.dataTransfer?.files?.[0]) handleImageUpload(e.dataTransfer.files[0]);
 });
 imageUploadInput.addEventListener('change', (e) => {
@@ -734,16 +858,19 @@ downloadBtn.addEventListener('click', handleDownloadClick);
 // Brand Kit Listeners
 saveGuidelinesBtn.addEventListener('click', () => {
     brandKit.guidelines = styleGuidelinesInput.value;
-    saveBrandKit();
-    alert('Guidelines saved!');
+    saveGuidelines();
+    // Maybe add a snackbar here later
 });
-colorPicker.addEventListener('input', () => { colorHexInput.value = colorPicker.value; });
+colorPicker.addEventListener('input', () => { 
+    const hexField = (window as any).mdc.textField.MDCTextField.attachTo(document.getElementById('color-hex-field'));
+    hexField.value = colorPicker.value;
+});
 colorHexInput.addEventListener('input', () => { colorPicker.value = colorHexInput.value; });
 addColorBtn.addEventListener('click', () => {
     const newColor = colorHexInput.value;
     if (newColor && !brandKit.colors.includes(newColor)) {
         brandKit.colors.push(newColor);
-        saveBrandKit();
+        saveColors();
         renderBrandKitUI();
     }
 });
@@ -753,6 +880,11 @@ logoUploadInput.addEventListener('change', (e) => {
 });
 
 // Brand Kit - Product Catalog Listeners
+bulkProductUploadInput.addEventListener('change', (e) => {
+    if ((e.target as HTMLInputElement).files) {
+        handleBulkProductUpload((e.target as HTMLInputElement).files);
+    }
+});
 newProductImageArea.addEventListener('click', () => newProductImageUpload.click());
 newProductImageUpload.addEventListener('change', async (e) => {
     const target = e.target as HTMLInputElement;
@@ -761,7 +893,7 @@ newProductImageUpload.addEventListener('change', async (e) => {
         const { data, mimeType } = await fileToGenerativePart(file);
         newProductImage = { data, mimeType };
         newProductImageText.textContent = file.name;
-        newProductImageArea.classList.add('border-cyan-400');
+        newProductImageArea.style.borderColor = 'var(--md-sys-color-primary)';
     }
 });
 addProductBtn.addEventListener('click', () => {
@@ -779,7 +911,7 @@ addProductBtn.addEventListener('click', () => {
         imageMimeType: newProductImage.mimeType,
     };
     brandKit.products.push(newProduct);
-    saveBrandKit();
+    saveProducts();
     renderProductCatalog();
 
     // Reset form
@@ -787,13 +919,17 @@ addProductBtn.addEventListener('click', () => {
     newProductDescription.value = '';
     newProductImage = null;
     newProductImageText.textContent = 'Click to upload';
-    newProductImageArea.classList.remove('border-cyan-400');
+    newProductImageArea.style.borderColor = 'var(--md-sys-color-outline)';
     newProductImageUpload.value = '';
+    // Reset MDC text fields
+    document.querySelectorAll('#add-product-btn').forEach(el => {
+        const field = (window as any).mdc.textField.MDCTextField.attachTo(el.previousElementSibling);
+        if (field) field.value = '';
+    });
 });
 
 // Brand Kit - Design Templates Listeners
 addTemplateBtn.addEventListener('click', () => openTemplateModal());
-closeTemplateModalBtn.addEventListener('click', closeTemplateModal);
 saveTemplateBtn.addEventListener('click', handleSaveTemplate);
 templateSearchInput.addEventListener('input', renderTemplateList);
 
@@ -811,9 +947,28 @@ automationPromptInput.addEventListener('change', () => {
     saveAutomationState();
 });
 
+// Theme Switcher Listener
+themeSwitcherButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const theme = (button as HTMLButtonElement).dataset.theme;
+        document.body.className = `mdc-typography ${theme}`;
+    });
+});
+
 
 // --- Initial App Load ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize MDC components
+    (window as any).mdc.autoInit();
+    templateModalInstance = new (window as any).mdc.dialog.MDCDialog(templateModal);
+
+    const tabBar = new (window as any).mdc.tabBar.MDCTabBar(document.querySelector('.mdc-tab-bar'));
+    tabBar.listen('MDCTabBar:activated', (event: any) => {
+      const index = event.detail.index;
+      const pageKey = ['design-studio', 'brand-kit', 'automation'][index];
+      navigateTo(pageKey as keyof typeof pages);
+    });
+
     loadBrandKit();
     loadAutomationState();
     loadAutomationHistory();
