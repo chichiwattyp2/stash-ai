@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stash AI Design Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Brand Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/ioz2jko.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Configure Tailwind CSS to use the new brand fonts
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['helvetica-lt-pro', 'Lato', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0"
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-gray-900 text-white font-sans">
+    <div id="app" class="container mx-auto p-4 md:p-8">
+      <!-- Header -->
+      <header class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold">
+          <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+          Stash AI Design Agent
+        </h1>
+        <p class="text-gray-400 mt-2">
+          Automate your social media designs with the power of AI.
+        </p>
+      </header>
+      
+      <!-- Navigation -->
+      <nav class="flex justify-center bg-gray-800 rounded-lg p-2 mb-8 sticky top-4 z-10">
+        <button id="nav-design-studio" class="nav-link text-cyan-400 font-semibold px-6 py-2 rounded-md">Design Studio</button>
+        <button id="nav-brand-kit" class="nav-link text-gray-300 hover:text-white px-6 py-2 rounded-md">Brand Kit</button>
+        <button id="nav-automation" class="nav-link text-gray-300 hover:text-white px-6 py-2 rounded-md">Automation</button>
+      </nav>
+
+      <!-- Main Content -->
+      <div id="design-studio-page">
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Controls Panel -->
+          <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col gap-6">
+            <div>
+              <label for="image-upload" class="block text-lg font-semibold mb-2"
+                >1. Upload Your Image</label
+              >
+              <div
+                id="image-upload-area"
+                class="border-2 border-dashed border-gray-500 p-8 text-center rounded-lg cursor-pointer hover:border-cyan-400 hover:bg-gray-700 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-4"
+                ></i>
+                <p>Drag & drop or click to upload</p>
+                <input
+                  type="file"
+                  id="image-upload"
+                  class="hidden"
+                  accept="image/*"
+                />
+              </div>
+            </div>
+            <div>
+              <label for="prompt-input" class="block text-lg font-semibold mb-2"
+                >2. Describe Your Design</label
+              >
+              <textarea
+                id="prompt-input"
+                rows="4"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition"
+                placeholder="e.g., add a '50% Off' sale banner, make the background a sunny beach..."
+              ></textarea>
+            </div>
+             <div>
+              <label class="block text-lg font-semibold mb-2">3. Add a Logo (Optional)</label>
+              <div id="logo-selection-container" class="grid grid-cols-4 gap-4 p-2 bg-gray-700 rounded-lg">
+                <!-- Selectable logos will be injected here -->
+              </div>
+            </div>
+            <button
+              id="generate-btn"
+              class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 disabled:bg-gray-600 disabled:cursor-not-allowed"
+            >
+              <span id="generate-btn-text">
+                <i class="fa-solid fa-rocket mr-2"></i>Generate Design
+              </span>
+              <span id="generate-spinner" class="hidden">
+                <i class="fa-solid fa-spinner animate-spin mr-2"></i>Working its
+                magic...
+              </span>
+            </button>
+          </div>
+
+          <!-- Image Display Panel -->
+          <div class="grid grid-cols-1 gap-8">
+            <!-- Original Image -->
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+              <h2 class="text-xl font-semibold mb-4 text-center">
+                Original Image
+              </h2>
+              <div
+                id="original-image-container"
+                class="aspect-square bg-gray-700 rounded-md flex items-center justify-center"
+              >
+                <span class="text-gray-500">Upload an image to start</span>
+              </div>
+            </div>
+            <!-- Generated Image -->
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+              <h2 class="text-xl font-semibold mb-4 text-center">
+                AI Generated Design
+              </h2>
+              <div
+                id="generated-image-container"
+                class="aspect-square bg-gray-700 rounded-md flex items-center justify-center relative"
+              >
+                <span class="text-gray-500"
+                  >Your AI design will appear here</span
+                >
+              </div>
+              <button
+                id="download-btn"
+                class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105 hidden"
+              >
+                <i class="fa-solid fa-download mr-2"></i>Download Image
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!-- Brand Kit Page -->
+      <div id="brand-kit-page" class="hidden">
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Column -->
+            <div class="flex flex-col gap-8">
+                <!-- Style Guidelines -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Style Guidelines</h2>
+                    <p class="text-gray-400 mb-4">Define your brand's voice, tone, and visual rules. This guide will be provided to the AI with every request.</p>
+                    <textarea id="style-guidelines-input" rows="10" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition" placeholder="e.g., Brand voice is witty and confident. Use vibrant, high-contrast imagery. Always place logos in the top-right corner. Avoid stock photos of people in suits."></textarea>
+                    <button id="save-guidelines-btn" class="mt-4 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition">Save Guidelines</button>
+                </div>
+                <!-- Brand Colors -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Brand Colors</h2>
+                    <div class="flex items-center gap-4 mb-4">
+                        <input type="color" id="color-picker" class="w-12 h-12 p-1 bg-gray-700 border border-gray-600 rounded-lg cursor-pointer" value="#38bdf8">
+                        <input type="text" id="color-hex-input" class="bg-gray-700 border border-gray-600 rounded-lg p-2 w-full" placeholder="#38bdf8">
+                        <button id="add-color-btn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transition">Add</button>
+                    </div>
+                    <div id="brand-colors-container" class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+                        <!-- Color swatches will be injected here -->
+                    </div>
+                </div>
+                 <!-- Brand Logos -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Brand Logos</h2>
+                    <div id="logo-upload-area" class="border-2 border-dashed border-gray-500 p-6 text-center rounded-lg cursor-pointer hover:border-cyan-400 hover:bg-gray-700 transition-colors mb-4">
+                        <i class="fa-solid fa-image text-3xl text-gray-400 mb-2"></i>
+                        <p>Upload Logos</p>
+                        <input type="file" id="logo-upload-input" class="hidden" accept="image/*" multiple>
+                    </div>
+                    <div id="brand-logos-container" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                       <!-- Logos will be injected here -->
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div class="flex flex-col gap-8">
+                <!-- Product Catalog -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Product Catalog</h2>
+                    <p class="text-gray-400 mb-6">Add products here for the Automation Hub. The AI will cycle through this catalog, using each product's image, name, and description for daily posts.</p>
+                    
+                    <!-- Add Product Form -->
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                        <h3 class="font-semibold text-lg mb-3">Add New Product</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div>
+                                <label for="new-product-image-upload" class="block text-sm font-medium text-gray-300 mb-1">Product Image</label>
+                                <div id="new-product-image-area" class="border-2 border-dashed border-gray-600 p-4 text-center rounded-lg cursor-pointer hover:border-cyan-400 bg-gray-800">
+                                    <span id="new-product-image-text">Click to upload</span>
+                                    <input type="file" id="new-product-image-upload" class="hidden" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div>
+                                    <label for="new-product-name" class="block text-sm font-medium text-gray-300 mb-1">Product Name</label>
+                                    <input type="text" id="new-product-name" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition">
+                                </div>
+                               <div>
+                                    <label for="new-product-description" class="block text-sm font-medium text-gray-300 mb-1">Description / Talking Points</label>
+                                    <textarea id="new-product-description" rows="3" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="add-product-btn" class="mt-4 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition">Add Product to Catalog</button>
+                    </div>
+
+                    <!-- Product List -->
+                    <div id="product-catalog-container" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Product cards will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+      </div>
+
+       <!-- Automation Page -->
+      <div id="automation-page" class="hidden">
+        <main class="flex flex-col gap-8">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Automation Hub</h2>
+                <p class="text-gray-400 mb-4">Set up a daily design brief. The AI will use your <strong>Product Catalog</strong> to generate a new design each day.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Automation Controls -->
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <label for="automation-prompt-input" class="block text-lg font-semibold mb-2">Daily "Evergreen" Prompt</label>
+                            <textarea id="automation-prompt-input" rows="8" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition" placeholder="e.g., Create a beautiful post for [DAY_OF_WEEK], [DATE]. The product of the day is [PRODUCT_NAME]. Highlight these points: [PRODUCT_DESCRIPTION]. Make it exciting and vibrant."></textarea>
+                            <p class="text-xs text-gray-400 mt-2">Use placeholders: <code class="bg-gray-900 px-1 rounded">[DATE]</code>, <code class="bg-gray-900 px-1 rounded">[DAY_OF_WEEK]</code>, <code class="bg-gray-900 px-1 rounded">[PRODUCT_NAME]</code>, <code class="bg-gray-900 px-1 rounded">[PRODUCT_DESCRIPTION]</code></p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button id="automation-toggle-btn" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg text-lg transition">
+                                <span id="automation-btn-text">Enable Daily Automation</span>
+                            </button>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <span id="automation-status-indicator" class="w-4 h-4 rounded-full bg-gray-500"></span>
+                                <span id="automation-status-text" class="text-gray-400">Disabled</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Automation Status & Info -->
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Today's Status</h3>
+                        <div id="automation-today-status" class="text-gray-400">
+                            <p>Loading automation status...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Automated Design History</h2>
+                <div id="automation-history-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- History items will be injected here -->
+                </div>
+            </div>
+        </main>
+      </div>
+
+    </div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
