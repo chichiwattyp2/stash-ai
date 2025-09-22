@@ -4,188 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stash AI Design Agent</title>
-    <!-- Material Components for the Web -->
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <!-- New M3 Stylesheet -->
+    <link rel="stylesheet" href="index.css" />
+    
+    <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Font Awesome (for some icons) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
     <!-- Brand Fonts -->
     <link rel="stylesheet" href="https://use.typekit.net/ioz2jko.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-
-    <style>
-      /* Light Theme */
-      .light {
-        --md-sys-color-primary: rgb(0 104 116);
-        --md-sys-color-surface-tint: rgb(0 104 116);
-        --md-sys-color-on-primary: rgb(255 255 255);
-        --md-sys-color-primary-container: rgb(158 239 253);
-        --md-sys-color-on-primary-container: rgb(0 79 88);
-        --md-sys-color-secondary: rgb(140 74 96);
-        --md-sys-color-on-secondary: rgb(255 255 255);
-        --md-sys-color-secondary-container: rgb(255 217 226);
-        --md-sys-color-on-secondary-container: rgb(112 51 72);
-        --md-sys-color-tertiary: rgb(82 94 125);
-        --md-sys-color-on-tertiary: rgb(255 255 255);
-        --md-sys-color-tertiary-container: rgb(218 226 255);
-        --md-sys-color-on-tertiary-container: rgb(59 70 100);
-        --md-sys-color-error: rgb(186 26 26);
-        --md-sys-color-on-error: rgb(255 255 255);
-        --md-sys-color-error-container: rgb(255 218 214);
-        --md-sys-color-on-error-container: rgb(147 0 10);
-        --md-sys-color-background: rgb(245 250 251);
-        --md-sys-color-on-background: rgb(23 29 30);
-        --md-sys-color-surface: rgb(245 250 251);
-        --md-sys-color-on-surface: rgb(23 29 30);
-        --md-sys-color-surface-variant: rgb(219 228 230);
-        --md-sys-color-on-surface-variant: rgb(63 72 74);
-        --md-sys-color-outline: rgb(111 121 122);
-        --md-sys-color-outline-variant: rgb(191 200 202);
-        --md-sys-color-shadow: rgb(0 0 0);
-        --md-sys-color-scrim: rgb(0 0 0);
-        --md-sys-color-inverse-surface: rgb(43 49 51);
-        --md-sys-color-inverse-on-surface: rgb(236 242 243);
-        --md-sys-color-inverse-primary: rgb(130 211 224);
-        --md-sys-color-primary-fixed: rgb(158 239 253);
-        --md-sys-color-on-primary-fixed: rgb(0 31 36);
-        --md-sys-color-primary-fixed-dim: rgb(130 211 224);
-        --md-sys-color-on-primary-fixed-variant: rgb(0 79 88);
-        --md-sys-color-secondary-fixed: rgb(255 217 226);
-        --md-sys-color-on-secondary-fixed: rgb(58 7 29);
-        --md-sys-color-secondary-fixed-dim: rgb(255 177 200);
-        --md-sys-color-on-secondary-fixed-variant: rgb(112 51 72);
-        --md-sys-color-tertiary-fixed: rgb(218 226 255);
-        --md-sys-color-on-tertiary-fixed: rgb(14 27 55);
-        --md-sys-color-tertiary-fixed-dim: rgb(186 198 234);
-        --md-sys-color-on-tertiary-fixed-variant: rgb(59 70 100);
-        --md-sys-color-surface-dim: rgb(213 219 220);
-        --md-sys-color-surface-bright: rgb(245 250 251);
-        --md-sys-color-surface-container-lowest: rgb(255 255 255);
-        --md-sys-color-surface-container-low: rgb(239 245 246);
-        --md-sys-color-surface-container: rgb(233 239 240);
-        --md-sys-color-surface-container-high: rgb(227 233 234);
-        --md-sys-color-surface-container-highest: rgb(222 227 229);
-      }
-      
-      /* Dark Theme */
-      .dark {
-        --md-sys-color-primary: rgb(130 211 224);
-        --md-sys-color-surface-tint: rgb(130 211 224);
-        --md-sys-color-on-primary: rgb(0 54 61);
-        --md-sys-color-primary-container: rgb(0 79 88);
-        --md-sys-color-on-primary-container: rgb(158 239 253);
-        --md-sys-color-secondary: rgb(255 177 200);
-        --md-sys-color-on-secondary: rgb(84 29 50);
-        --md-sys-color-secondary-container: rgb(112 51 72);
-        --md-sys-color-on-secondary-container: rgb(255 217 226);
-        --md-sys-color-tertiary: rgb(186 198 234);
-        --md-sys-color-on-tertiary: rgb(36 48 77);
-        --md-sys-color-tertiary-container: rgb(59 70 100);
-        --md-sys-color-on-tertiary-container: rgb(218 226 255);
-        --md-sys-color-error: rgb(255 180 171);
-        --md-sys-color-on-error: rgb(105 0 5);
-        --md-sys-color-error-container: rgb(147 0 10);
-        --md-sys-color-on-error-container: rgb(255 218 214);
-        --md-sys-color-background: rgb(14 20 21);
-        --md-sys-color-on-background: rgb(222 227 229);
-        --md-sys-color-surface: rgb(14 20 21);
-        --md-sys-color-on-surface: rgb(222 227 229);
-        --md-sys-color-surface-variant: rgb(63 72 74);
-        --md-sys-color-on-surface-variant: rgb(191 200 202);
-        --md-sys-color-outline: rgb(137 146 148);
-        --md-sys-color-outline-variant: rgb(63 72 74);
-        --md-sys-color-shadow: rgb(0 0 0);
-        --md-sys-color-scrim: rgb(0 0 0);
-        --md-sys-color-inverse-surface: rgb(222 227 229);
-        --md-sys-color-inverse-on-surface: rgb(43 49 51);
-        --md-sys-color-inverse-primary: rgb(0 104 116);
-        --md-sys-color-primary-fixed: rgb(158 239 253);
-        --md-sys-color-on-primary-fixed: rgb(0 31 36);
-        --md-sys-color-primary-fixed-dim: rgb(130 211 224);
-        --md-sys-color-on-primary-fixed-variant: rgb(0 79 88);
-        --md-sys-color-secondary-fixed: rgb(255 217 226);
-        --md-sys-color-on-secondary-fixed: rgb(58 7 29);
-        --md-sys-color-secondary-fixed-dim: rgb(255 177 200);
-        --md-sys-color-on-secondary-fixed-variant: rgb(112 51 72);
-        --md-sys-color-tertiary-fixed: rgb(218 226 255);
-        --md-sys-color-on-tertiary-fixed: rgb(14 27 55);
-        --md-sys-color-tertiary-fixed-dim: rgb(186 198 234);
-        --md-sys-color-on-tertiary-fixed-variant: rgb(59 70 100);
-        --md-sys-color-surface-dim: rgb(14 20 21);
-        --md-sys-color-surface-bright: rgb(52 58 59);
-        --md-sys-color-surface-container-lowest: rgb(9 15 16);
-        --md-sys-color-surface-container-low: rgb(23 29 30);
-        --md-sys-color-surface-container: rgb(27 33 34);
-        --md-sys-color-surface-container-high: rgb(37 43 44);
-        --md-sys-color-surface-container-highest: rgb(48 54 55);
-      }
-
-      body {
-        font-family: 'helvetica-lt-pro', 'Lato', sans-serif;
-        background-color: var(--md-sys-color-background);
-        color: var(--md-sys-color-on-background);
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      .mdc-tab {
-        font-family: 'helvetica-lt-pro', 'Lato', sans-serif !important;
-      }
-      .mdc-card {
-        border-radius: 12px !important;
-        background-color: var(--md-sys-color-surface-container-low);
-        border: 1px solid var(--md-sys-color-outline-variant);
-      }
-      .mdc-text-field {
-        background-color: var(--md-sys-color-surface-container) !important;
-      }
-      .mdc-tab-bar {
-        background-color: var(--md-sys-color-surface);
-      }
-      .mdc-button--raised {
-        background-color: var(--md-sys-color-primary) !important;
-        color: var(--md-sys-color-on-primary) !important;
-      }
-       .mdc-button--outlined {
-        border-color: var(--md-sys-color-outline) !important;
-        color: var(--md-sys-color-primary) !important;
-      }
-      .mdc-dialog .mdc-dialog__surface {
-        background-color: var(--md-sys-color-surface-container-high);
-      }
-
-      .page {
-          display: none;
-      }
-      .page.active {
-          display: block;
-      }
-      .grid-container {
-        display: grid;
-        gap: 1.5rem;
-      }
-      .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-      .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-       @media (min-width: 768px) {
-        .md-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .md-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      }
-       @media (min-width: 1024px) {
-        .lg-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .lg-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      }
-      .hidden { display: none !important; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet" />
 
     <script type="importmap">
       {
@@ -195,122 +25,89 @@
       }
     </script>
   </head>
-  <body class="mdc-typography dark">
-    <div id="app" style="max-width: 1200px; margin: auto; padding: 1rem;">
+  <body class="theme-dark m3">
+    <div id="app" class="container" style="display: flex; flex-direction: column; gap: var(--m3-gap-5);">
       <!-- Header -->
-       <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+       <header style="display: flex; justify-content: space-between; align-items: center;">
          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2gAAAB5CAMAAAC3vj9AAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAllBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6TqcCAAAAMnRSTlMA+hL5A/UnBvH28I52fWg/Lh8V6uG8n4t1b2RgW0k/JOnk4dzY1M/NzMXAu6+ro52bmXt3d2pZUEA9MzEgGxsLBwIB/aH2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+YLFBEyD/8SctwAAAWlSURBVHja7dzrdtu2FAbgFxC45JxzB0hISAgJgQRAAv//f6k6s1l2Xy2Ppwfpae17bC+2WJk+5eGHw+FwOBwOh8PhcDgci/EwDOPk/D58v+P32/f/g2GkKqWGUqU0lKmln1K5tJSmpZZSqZTS0Eqp0h+lViqlNdRSqtQilVLKRyslK1LdK1JbpZ6VK2UvUrFKNStZydqUqVStZCVrV6ZWtZKVrl2ZytZKVrp2ZWrbKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrp-ghAAAAABJRU5ErkJggg==" alt="Stash Logo" style="max-width: 150px;">
          <div class="theme-switcher">
-            <button class="mdc-button" data-theme="light">Light</button>
-            <button class="mdc-button" data-theme="dark">Dark</button>
+            <button class="m3-btn m3-btn--text" data-theme="light">Light</button>
+            <button class="m3-btn m3-btn--text" data-theme="dark">Dark</button>
          </div>
       </header>
       
       <!-- Navigation -->
-      <div class="mdc-tab-bar" role="tablist">
-        <div class="mdc-tab-scroller">
-          <div class="mdc-tab-scroller__scroll-area">
-            <div class="mdc-tab-scroller__scroll-content">
-              <button id="nav-design-studio" class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
-                <span class="mdc-tab__content">
-                  <span class="mdc-tab__icon material-icons" aria-hidden="true">palette</span>
-                  <span class="mdc-tab__text-label">Design Studio</span>
-                </span>
-                <span class="mdc-tab-indicator mdc-tab-indicator--active">
-                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                </span>
-                <span class="mdc-tab__ripple"></span>
-              </button>
-              <button id="nav-brand-kit" class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
-                 <span class="mdc-tab__content">
-                   <span class="mdc-tab__icon material-icons" aria-hidden="true">style</span>
-                  <span class="mdc-tab__text-label">Brand Kit</span>
-                </span>
-                <span class="mdc-tab-indicator">
-                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                </span>
-                <span class="mdc-tab__ripple"></span>
-              </button>
-              <button id="nav-automation" class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
-                 <span class="mdc-tab__content">
-                   <span class="mdc-tab__icon material-icons" aria-hidden="true">schedule</span>
-                  <span class="mdc-tab__text-label">Automation</span>
-                </span>
-                <span class="mdc-tab-indicator">
-                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                </span>
-                <span class="mdc-tab__ripple"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <nav class="nav-tabs" role="tablist">
+        <button id="nav-design-studio" class="m3-btn m3-btn--text m3-state active-tab" role="tab" aria-selected="true">
+            <i class="material-icons">palette</i>
+            <span>Design Studio</span>
+        </button>
+        <button id="nav-brand-kit" class="m3-btn m3-btn--text m3-state" role="tab" aria-selected="false">
+            <i class="material-icons">style</i>
+            <span>Brand Kit</span>
+        </button>
+        <button id="nav-automation" class="m3-btn m3-btn--text m3-state" role="tab" aria-selected="false">
+            <i class="material-icons">schedule</i>
+            <span>Automation</span>
+        </button>
+      </nav>
       
-      <main style="padding-top: 1.5rem;">
+      <main>
         <!-- Design Studio Page -->
         <section id="design-studio-page" class="page active">
-            <div class="grid-container md-grid-cols-2">
+            <div class="row">
                 <!-- Controls Card -->
-                <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                    
-                        <h2 class="mdc-typography--headline6" style="margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">1. Upload Image</h2>
-                        <div id="image-upload-area" style="border: 2px dashed var(--md-sys-color-outline); padding: 2rem; text-align: center; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease;">
-                            <i class="fas fa-cloud-arrow-up" style="font-size: 2.5rem; color: var(--md-sys-color-outline); margin-bottom: 1rem;"></i>
-                            <p class="mdc-typography--body1" style="color: var(--md-sys-color-on-surface-variant);">Drag & drop or click to upload</p>
-                        </div>
-                        <input type="file" id="image-upload" class="hidden" accept="image/*">
-
-                        <h2 class="mdc-typography--headline6" style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">2. Describe Your Design</h2>
-                        <label id="prompt-input-field" class="mdc-text-field mdc-text-field--textarea mdc-text-field--filled" style="width: 100%;">
-                            <span class="mdc-text-field__ripple"></span>
-                            <span class="mdc-floating-label" id="my-label-id">e.g., add a '50% Off' sale banner...</span>
-                            <textarea id="prompt-input" class="mdc-text-field__input" rows="4" aria-labelledby="my-label-id"></textarea>
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-
-                        <h2 class="mdc-typography--headline6" style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">3. Add a Logo</h2>
-                        <div id="logo-selection-container" class="grid-container grid-cols-4" style="background-color: var(--md-sys-color-surface-container); padding: 0.5rem; border-radius: 8px;">
-                            <!-- Logos injected here -->
-                        </div>
-
-                        <button id="generate-btn" class="mdc-button mdc-button--raised" style="width: 100%; margin-top: 1.5rem; padding: 12px 0;">
-                            <span class="mdc-button__ripple"></span>
-                            <i class="material-icons mdc-button__icon" aria-hidden="true">auto_awesome</i>
-                            <span id="generate-btn-text" class="mdc-button__label">Generate Design</span>
-                            <div id="generate-spinner" class="mdc-circular-progress mdc-circular-progress--indeterminate hidden" style="width:24px;height:24px;" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="1">
-                                <div class="mdc-circular-progress__determinate-container">
-                                    <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/></svg>
-                                </div>
-                                <div class="mdc-circular-progress__indeterminate-container">
-                                    <div class="mdc-circular-progress__spinner-layer">
-                                        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div>
-                                        <div class="mdc-circular-progress__gap-patch"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div>
-                                        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div>
-                                    </div>
-                                </div>
+                <div class="col">
+                    <div class="m3-card" style="display: flex; flex-direction: column; gap: var(--m3-gap-5); flex-grow: 1;">
+                        <div>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">1. Upload Image</h2>
+                            <div id="image-upload-area" style="border: 2px dashed var(--m3-outline); padding: 2rem; text-align: center; border-radius: var(--m3-shape-large); cursor: pointer; transition: background-color 0.2s ease; margin-top: var(--m3-gap-3);">
+                                <i class="fas fa-cloud-arrow-up" style="font-size: 2.5rem; color: var(--m3-outline); margin-bottom: 1rem;"></i>
+                                <p class="m3-body-lg" style="color: var(--m3-on-surface-variant);">Drag & drop or click to upload</p>
                             </div>
+                            <input type="file" id="image-upload" class="hidden" accept="image/*">
+                        </div>
+
+                        <div>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">2. Describe Your Design</h2>
+                            <div class="m3-field" style="margin-top: var(--m3-gap-3);">
+                                <label for="prompt-input">e.g., add a '50% Off' sale banner...</label>
+                                <textarea id="prompt-input" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                             <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">3. Add a Logo</h2>
+                             <div id="logo-selection-container" class="grid grid-cols-4" style="background-color: var(--m3-surface-variant); padding: var(--m3-gap-2); border-radius: var(--m3-shape-large); margin-top: var(--m3-gap-3);">
+                                <!-- Logos injected here -->
+                            </div>
+                        </div>
+
+                        <button id="generate-btn" class="m3-btn m3-btn--filled m3-state" style="width: 100%; padding: 12px 0;">
+                            <i class="material-icons">auto_awesome</i>
+                            <span id="generate-btn-text">Generate Design</span>
+                            <span id="generate-spinner" class="hidden"><i class="fas fa-spinner fa-spin"></i></span>
                         </button>
-                    
+                    </div>
                 </div>
 
                 <!-- Image Display -->
-                <div class="grid-container grid-cols-1" style="gap: 1.5rem;">
-                    <div class="mdc-card mdc-card--outlined" style="padding: 1rem;">
-                            <h2 class="mdc-typography--headline6" style="text-align: center; margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">Original Image</h2>
-                            <div id="original-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--md-sys-color-surface-container); border-radius: 8px;">
-                                <span style="color: var(--md-sys-color-on-surface-variant);">Upload an image to start</span>
-                            </div>
+                <div class="col">
+                    <div class="m3-card">
+                        <h2 class="m3-headline-sm" style="text-align: center; color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">Original Image</h2>
+                        <div id="original-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium);">
+                            <span style="color: var(--m3-on-surface-variant);">Upload an image to start</span>
+                        </div>
                     </div>
-                    <div class="mdc-card mdc-card--outlined" style="padding: 1rem;">
-                            <h2 class="mdc-typography--headline6" style="text-align: center; margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">AI Generated Design</h2>
-                             <div id="generated-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--md-sys-color-surface-container); border-radius: 8px;">
-                                <span style="color: var(--md-sys-color-on-surface-variant);">Your AI design will appear here</span>
-                            </div>
-                            <button id="download-btn" class="mdc-button mdc-button--raised hidden" style="width: 100%; margin-top: 1rem;">
-                                <span class="mdc-button__ripple"></span>
-                                <i class="material-icons mdc-button__icon" aria-hidden="true">download</i>
-                                <span class="mdc-button__label">Download Image</span>
-                            </button>
+                    <div class="m3-card">
+                        <h2 class="m3-headline-sm" style="text-align: center; color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">AI Generated Design</h2>
+                         <div id="generated-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium);">
+                            <span style="color: var(--m3-on-surface-variant);">Your AI design will appear here</span>
+                        </div>
+                        <button id="download-btn" class="m3-btn m3-btn--filled m3-state hidden" style="width: 100%; margin-top: var(--m3-gap-4);">
+                            <i class="material-icons">download</i>
+                            <span>Download Image</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -318,105 +115,83 @@
 
         <!-- Brand Kit Page -->
         <section id="brand-kit-page" class="page">
-             <div class="grid-container lg-grid-cols-2">
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                        <h2 class="mdc-typography--headline5" style="margin-bottom: 1rem;">Style Guidelines</h2>
-                         <label id="style-guidelines-field" class="mdc-text-field mdc-text-field--textarea mdc-text-field--filled" style="width: 100%;">
-                            <span class="mdc-text-field__ripple"></span>
-                             <span class="mdc-floating-label">Brand voice, rules, etc.</span>
-                            <textarea id="style-guidelines-input" class="mdc-text-field__input" rows="10"></textarea>
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-                        <button id="save-guidelines-btn" class="mdc-button mdc-button--raised" style="margin-top: 1rem; width: 100%;">
-                            <span class="mdc-button__ripple"></span>
-                            <span class="mdc-button__label">Save Guidelines</span>
+             <div class="row">
+                <div class="col">
+                    <div class="m3-card">
+                        <h2 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Style Guidelines</h2>
+                        <div class="m3-field">
+                            <label for="style-guidelines-input">Brand voice, rules, etc.</label>
+                            <textarea id="style-guidelines-input" rows="10"></textarea>
+                        </div>
+                        <button id="save-guidelines-btn" class="m3-btn m3-btn--filled m3-state" style="margin-top: var(--m3-gap-4); width: 100%;">
+                            <span>Save Guidelines</span>
                         </button>
                     </div>
-
-                    <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                        <h2 class="mdc-typography--headline5" style="margin-bottom: 1rem;">Brand Colors</h2>
-                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                            <input type="color" id="color-picker" style="min-width: 48px; height: 48px; border: none; background: none; border-radius: 8px; cursor: pointer;" value="#e11f1f">
-                             <label id="color-hex-field" class="mdc-text-field mdc-text-field--filled" style="flex-grow: 1;">
-                                 <span class="mdc-text-field__ripple"></span>
-                                 <span class="mdc-floating-label">#e11f1f</span>
-                                <input type="text" id="color-hex-input" class="mdc-text-field__input">
-                                <span class="mdc-line-ripple"></span>
-                            </label>
-                            <button id="add-color-btn" class="mdc-button mdc-button--outlined">
-                                <span class="mdc-button__ripple"></span>
-                                <span class="mdc-button__label">Add</span>
+                    <div class="m3-card">
+                        <h2 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Brand Colors</h2>
+                        <div style="display: flex; align-items: center; gap: var(--m3-gap-4); margin-bottom: var(--m3-gap-4);">
+                            <input type="color" id="color-picker" style="min-width: 48px; height: 48px; border: none; background: none; border-radius: var(--m3-shape-small); cursor: pointer;" value="#e11f1f">
+                            <div class="m3-field" style="flex-grow: 1;">
+                                <label for="color-hex-input">Hex Code</label>
+                                <input type="text" id="color-hex-input">
+                            </div>
+                            <button id="add-color-btn" class="m3-btn m3-btn--outlined m3-state">
+                                <span>Add</span>
                             </button>
                         </div>
-                        <div id="brand-colors-container" class="grid-container grid-cols-4 md-grid-cols-3"></div>
+                        <div id="brand-colors-container" class="grid grid-cols-4 md-grid-cols-3"></div>
                     </div>
-
-                    <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                        <h2 class="mdc-typography--headline5" style="margin-bottom: 1rem;">Brand Logos</h2>
-                        <div id="logo-upload-area" style="text-align: center; padding: 1.5rem; margin-bottom: 1rem; border: 2px dashed var(--md-sys-color-outline); border-radius: 8px; cursor: pointer;">
-                            <i class="material-icons" style="font-size: 3rem; color: var(--md-sys-color-outline);">add_photo_alternate</i>
-                            <p class="mdc-typography--body1" style="color: var(--md-sys-color-on-surface-variant);">Upload Logos</p>
+                    <div class="m3-card">
+                        <h2 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Brand Logos</h2>
+                        <div id="logo-upload-area" style="text-align: center; padding: 1.5rem; margin-bottom: 1rem; border: 2px dashed var(--m3-outline); border-radius: var(--m3-shape-large); cursor: pointer;">
+                            <i class="material-icons" style="font-size: 3rem; color: var(--m3-outline);">add_photo_alternate</i>
+                            <p class="m3-body-lg" style="color: var(--m3-on-surface-variant);">Upload Logos</p>
                         </div>
                         <input type="file" id="logo-upload-input" class="hidden" accept="image/*" multiple>
-                        <div id="brand-logos-container" class="grid-container grid-cols-2 md-grid-cols-3"></div>
+                        <div id="brand-logos-container" class="grid grid-cols-2 md-grid-cols-3"></div>
                     </div>
                 </div>
-                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                     <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                        <h2 class="mdc-typography--headline5" style="margin-bottom: 1rem;">Product Catalog</h2>
-                        
-                        <!-- Bulk Upload -->
+                 <div class="col">
+                     <div class="m3-card">
+                        <h2 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Product Catalog</h2>
                         <div style="margin-bottom: 1.5rem;">
-                            <h3 class="mdc-typography--headline6" style="margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Bulk Upload</h3>
-                             <p class="mdc-typography--body2" style="margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">Name files as <strong>ProductName_Description.jpg</strong> to auto-fill.</p>
+                            <h3 class="m3-title-md" style="color: var(--m3-on-surface-variant);">Bulk Upload</h3>
+                             <p class="m3-body-sm" style="margin-block: var(--m3-gap-2); color: var(--m3-on-surface-variant);">Name files as <strong>ProductName_Description.jpg</strong> to auto-fill.</p>
                              <input type="file" id="bulk-product-upload" multiple accept="image/*" class="w-full">
                         </div>
-                        
-                        <!-- Single Upload -->
-                        <h3 class="mdc-typography--headline6" style="margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Add Single Product</h3>
-                        <div id="new-product-image-area" style="border: 2px dashed var(--md-sys-color-outline); border-radius: 8px; cursor: pointer; padding: 1rem; text-align: center; margin-bottom: 1rem;">
-                            <span id="new-product-image-text" style="color: var(--md-sys-color-on-surface-variant);">Click to upload product image</span>
+                        <hr style="border-color: var(--m3-outline-variant); margin-block: var(--m3-gap-4);">
+                        <h3 class="m3-title-md" style="color: var(--m3-on-surface-variant);">Add Single Product</h3>
+                        <div id="new-product-image-area" style="border: 2px dashed var(--m3-outline); border-radius: var(--m3-shape-large); cursor: pointer; padding: 1rem; text-align: center; margin-block: var(--m3-gap-3);">
+                            <span id="new-product-image-text" style="color: var(--m3-on-surface-variant);">Click to upload product image</span>
                         </div>
                         <input type="file" id="new-product-image-upload" accept="image/*" class="hidden">
-                        
-                        <label class="mdc-text-field mdc-text-field--filled" style="width: 100%; margin-bottom: 1rem;">
-                            <span class="mdc-text-field__ripple"></span>
-                             <span class="mdc-floating-label">Product Name</span>
-                            <input id="new-product-name" type="text" class="mdc-text-field__input">
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-                         <label class="mdc-text-field mdc-text-field--textarea mdc-text-field--filled" style="width: 100%; margin-bottom: 1rem;">
-                              <span class="mdc-text-field__ripple"></span>
-                             <span class="mdc-floating-label">Product Description</span>
-                            <textarea id="new-product-description" class="mdc-text-field__input" rows="2"></textarea>
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-                        <button id="add-product-btn" class="mdc-button mdc-button--raised" style="width: 100%;">
-                            <span class="mdc-button__ripple"></span>
-                             <span class="mdc-button__label">Add Product</span>
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                            <label for="new-product-name">Product Name</label>
+                            <input id="new-product-name" type="text">
+                        </div>
+                         <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                            <label for="new-product-description">Product Description</label>
+                            <textarea id="new-product-description" rows="2"></textarea>
+                        </div>
+                        <button id="add-product-btn" class="m3-btn m3-btn--filled m3-state" style="width: 100%;">
+                             <span>Add Product</span>
                         </button>
-
-                        <div id="product-catalog-container" class="grid-container grid-cols-2 md-grid-cols-3" style="margin-top: 1.5rem;"></div>
+                        <div id="product-catalog-container" class="grid grid-cols-2 md-grid-cols-3" style="margin-top: 1.5rem;"></div>
                     </div>
-                     <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                        <h2 class="mdc-typography--headline5" style="margin-bottom: 1rem;">Design Templates</h2>
+                     <div class="m3-card">
+                        <h2 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Design Templates</h2>
                          <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                             <label class="mdc-text-field mdc-text-field--filled" style="flex-grow: 1;">
-                                 <span class="mdc-text-field__ripple"></span>
-                                 <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">search</i>
-                                 <span class="mdc-floating-label">Search Templates</span>
-                                 <input id="template-search-input" type="text" class="mdc-text-field__input">
-                                 <span class="mdc-line-ripple"></span>
-                             </label>
-                             <button id="add-template-btn" class="mdc-button mdc-button--raised">
-                                 <span class="mdc-button__ripple"></span>
-                                 <span class="mdc-button__label">New</span>
+                             <div class="m3-field" style="flex-grow: 1;">
+                                 <label for="template-search-input">Search Templates</label>
+                                 <input id="template-search-input" type="text" placeholder="Search...">
+                             </div>
+                             <button id="add-template-btn" class="m3-btn m3-btn--filled m3-state">
+                                 <span>New</span>
                              </button>
                          </div>
-                         <div class="grid-container md-grid-cols-2" style="height: 400px; border: 1px solid var(--md-sys-color-outline-variant); border-radius: 8px;">
-                             <div id="template-list-container" style="overflow-y: auto; background: var(--md-sys-color-surface-container);"></div>
-                             <div id="template-preview-container" style="padding: 1rem;"></div>
+                         <div class="row" style="height: 400px; border: 1px solid var(--m3-outline-variant); border-radius: var(--m3-shape-large); overflow: hidden;">
+                             <div id="template-list-container" class="col" style="overflow-y: auto; background: var(--m3-surface); padding: var(--m3-gap-2);"></div>
+                             <div id="template-preview-container" class="col" style="padding: var(--m3-gap-4);"></div>
                          </div>
                     </div>
                  </div>
@@ -425,34 +200,30 @@
 
         <!-- Automation Page -->
         <section id="automation-page" class="page">
-           <div class="mdc-card mdc-card--outlined" style="padding: 1.5rem;">
-                <h2 class="mdc-typography--headline5" style="margin-bottom: 1.5rem;">Daily Design Automation</h2>
-                <div class="grid-container md-grid-cols-2">
-                    <div>
-                        <h3 class="mdc-typography--headline6" style="margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Automation Controls</h3>
-                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--md-sys-color-surface-container); border-radius: 8px; margin-bottom: 1.5rem;">
+           <div class="m3-card">
+                <h2 class="m3-headline-sm" style="margin-bottom: var(--m3-gap-5);">Daily Design Automation</h2>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="m3-title-md" style="color: var(--m3-on-surface-variant);">Automation Controls</h3>
+                        <div style="display: flex; align-items: center; gap: var(--m3-gap-4); padding: var(--m3-gap-4); background: var(--m3-surface-variant); border-radius: var(--m3-shape-large);">
                            <span id="automation-status-indicator" style="width: 12px; height: 12px; border-radius: 50%;"></span>
-                           <span id="automation-status-text" class="mdc-typography--body1"></span>
-                           <button id="automation-toggle-btn" class="mdc-button mdc-button--raised" style="margin-left: auto;">
-                                <span class="mdc-button__ripple"></span>
-                               <span id="automation-btn-text" class="mdc-button__label"></span>
+                           <span id="automation-status-text" class="m3-body-lg"></span>
+                           <button id="automation-toggle-btn" class="m3-btn m3-btn--filled m3-state" style="margin-left: auto;">
+                               <span id="automation-btn-text"></span>
                            </button>
                         </div>
-                        
-                        <h3 class="mdc-typography--headline6" style="margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Evergreen Prompt</h3>
-                         <p class="mdc-typography--body2" style="margin-bottom: 1rem; color: var(--md-sys-color-on-surface-variant);">Use placeholders: [DATE], [DAY_OF_WEEK], [PRODUCT_NAME], [PRODUCT_DESCRIPTION]</p>
-                         <label class="mdc-text-field mdc-text-field--textarea mdc-text-field--filled" style="width: 100%;">
-                            <span class="mdc-text-field__ripple"></span>
-                             <span class="mdc-floating-label">e.g., Feature [PRODUCT_NAME] today...</span>
-                            <textarea id="automation-prompt-input" class="mdc-text-field__input" rows="8"></textarea>
-                            <span class="mdc-line-ripple"></span>
-                        </label>
+                        <h3 class="m3-title-md" style="color: var(--m3-on-surface-variant);">Evergreen Prompt</h3>
+                         <p class="m3-body-sm" style="color: var(--m3-on-surface-variant);">Use placeholders: [DATE], [DAY_OF_WEEK], [PRODUCT_NAME], [PRODUCT_DESCRIPTION]</p>
+                         <div class="m3-field">
+                            <label for="automation-prompt-input">e.g., Feature [PRODUCT_NAME] today...</label>
+                            <textarea id="automation-prompt-input" rows="8"></textarea>
+                        </div>
                     </div>
-                    <div>
-                         <h3 class="mdc-typography--headline6" style="margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Today's Status</h3>
-                         <div id="automation-today-status" style="min-height: 50px; padding: 1rem; background-color: var(--md-sys-color-surface-container); border-radius: 8px;"></div>
-                         <h3 class="mdc-typography--headline6" style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--md-sys-color-on-surface-variant);">Generated History</h3>
-                         <div id="automation-history-container" class="grid-container grid-cols-2" style="max-height: 400px; overflow-y: auto; padding: 0.5rem;">
+                    <div class="col">
+                         <h3 class="m3-title-md" style="color: var(--m3-on-surface-variant);">Today's Status</h3>
+                         <div id="automation-today-status" style="min-height: 50px; padding: var(--m3-gap-4); background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-large);"></div>
+                         <h3 class="m3-title-md" style="margin-top: 1.5rem; color: var(--m3-on-surface-variant);">Generated History</h3>
+                         <div id="automation-history-container" class="grid grid-cols-2" style="max-height: 400px; overflow-y: auto; padding: 0.5rem;">
                             <!-- History items injected here -->
                          </div>
                     </div>
@@ -462,37 +233,29 @@
       </main>
 
        <!-- Template Modal -->
-        <div id="template-modal" class="mdc-dialog hidden">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="template-dialog-title">
-                    <div class="mdc-dialog__header">
-                        <h2 class="mdc-dialog__title" id="template-modal-title">Add New Template</h2>
-                        <button id="close-template-modal-btn" class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">close</button>
+        <div id="template-modal" class="m3-dialog-backdrop">
+            <div class="m3-dialog" role="alertdialog" aria-modal="true" aria-labelledby="template-dialog-title">
+                <div class="m3-dialog-header">
+                    <h2 class="m3-title-lg" id="template-modal-title">Add New Template</h2>
+                    <button id="close-template-modal-btn" class="m3-icon-btn m3-state"><i class="material-icons">close</i></button>
+                </div>
+                <div class="m3-dialog-content">
+                    <input type="hidden" id="template-id-input">
+                    <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                        <label for="template-name-input">Template Name</label>
+                        <input id="template-name-input" type="text" >
                     </div>
-                    <div class="mdc-dialog__content" style="padding: 1.5rem;">
-                        <input type="hidden" id="template-id-input">
-                        <label class="mdc-text-field mdc-text-field--filled" style="width: 100%; margin-bottom: 1rem;">
-                            <span class="mdc-text-field__ripple"></span>
-                            <span class="mdc-floating-label">Template Name</span>
-                            <input id="template-name-input" type="text" class="mdc-text-field__input">
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-                        <label class="mdc-text-field mdc-text-field--textarea mdc-text-field--filled" style="width: 100%;">
-                             <span class="mdc-text-field__ripple"></span>
-                            <span class="mdc-floating-label">Template Prompt</span>
-                            <textarea id="template-prompt-input" class="mdc-text-field__input" rows="6"></textarea>
-                            <span class="mdc-line-ripple"></span>
-                        </label>
-                    </div>
-                    <div class="mdc-dialog__actions">
-                        <button id="save-template-btn" type="button" class="mdc-button mdc-dialog__button">
-                            <span class="mdc-button__ripple"></span>
-                            <span class="mdc-button__label">Save Template</span>
-                        </button>
+                    <div class="m3-field">
+                        <label for="template-prompt-input">Template Prompt</label>
+                        <textarea id="template-prompt-input" rows="6"></textarea>
                     </div>
                 </div>
+                <div class="m3-dialog-actions">
+                    <button id="save-template-btn" type="button" class="m3-btn m3-btn--filled m3-state">
+                        <span>Save Template</span>
+                    </button>
+                </div>
             </div>
-            <div class="mdc-dialog__scrim"></div>
         </div>
 
     </div>

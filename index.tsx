@@ -6,7 +6,7 @@
 import {GoogleGenAI, Modality, GenerateContentResponse} from '@google/genai';
 
 // --- Constants ---
-const STASH_LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2gAAAB5CAMAAAC3vj9AAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAllBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6TqcCAAAAMnRSTlMA+hL5A/UnBvH28I52fWg/Lh8V6uG8n4t1b2RgW0k/JOnk4dzY1M/NzMXAu6+ro52bmXt3d2pZUEA9MzEgGxsLBwIB/aH2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SUhFB+YLFBEyD/8SctwAAAWlSURBVHja7dzrdtu2FAbgFxC45JxzB0hISAgJgQRAAv//f6k6s1l2Xy2Ppwfpae17bC+2WJk+5eGHw+FwOBwOh8PhcDgci/EwDOPk/D58v+P32/f/g2GkKqWGUqU0lKmln1K5tJSmpZZSqZTS0Eqp0h+lViqlNdRSqtQilVLKRyslK1LdK1JbpZ6VK2UvUrFKNStZydqUqVStZCVrV6ZWtZKVrl2ZytZKVrp2ZWrbKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrp-ghAAAAABJRU5ErkJggg==';
+const STASH_LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2gAAAB5CAMAAAC3vj9AAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAllBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6TqcCAAAAMnRSTlMA+hL5A/UnBvH28I52fWg/Lh8V6uG8n4t1b2RgW0k/JOnk4dzY1M/NzMXAu6+ro52bmXt3d2pZUEA9MzEgGxsLBwIB/aH2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+YLFBEyD/8SctwAAAWlSURBVHja7dzrdtu2FAbgFxC45JxzB0hISAgJgQRAAv//f6k6s1l2Xy2Ppwfpae17bC+2WJk+5eGHw+FwOBwOh8PhcDgci/EwDOPk/D58v+P32/f/g2GkKqWGUqU0lKmln1K5tJSmpZZSqZTS0Eqp0h+lViqlNdRSqtQilVLKRyslK1LdK1JbpZ6VK2UvUrFKNStZydqUqVStZCVrV6ZWtZKVrl2ZytZKVrp2ZWrbKVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrpmpWtZVrp-ghAAAAABJRU5ErkJggg==';
 
 // --- DOM Element References ---
 const designStudioPage = document.getElementById('design-studio-page') as HTMLElement;
@@ -58,12 +58,12 @@ const templatePreviewContainer = document.getElementById('template-preview-conta
 
 // Template Modal Elements
 const templateModal = document.getElementById('template-modal') as HTMLDivElement;
-let templateModalInstance: any; // MDC Dialog instance
 const templateModalTitle = document.getElementById('template-modal-title') as HTMLHeadingElement;
 const templateIdInput = document.getElementById('template-id-input') as HTMLInputElement;
 const templateNameInput = document.getElementById('template-name-input') as HTMLInputElement;
 const templatePromptInput = document.getElementById('template-prompt-input') as HTMLTextAreaElement;
 const saveTemplateBtn = document.getElementById('save-template-btn') as HTMLButtonElement;
+const closeTemplateModalBtn = document.getElementById('close-template-modal-btn') as HTMLButtonElement;
 
 
 // Automation Elements
@@ -148,10 +148,10 @@ const updateLoadingState = (loading: boolean) => {
     generateBtnText.classList.add('hidden');
     generateSpinner.classList.remove('hidden');
     generatedImageContainer.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--md-sys-color-on-surface-variant); height: 100%;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--m3-on-surface-variant); height: 100%;">
           <i class="fas fa-spinner fa-spin" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
           <p>Our AI designer is crafting your image...</p>
-          <p style="font-size: 0.875rem; color: var(--md-sys-color-outline);">This can take a moment.</p>
+          <p style="font-size: 0.875rem; color: var(--m3-outline);">This can take a moment.</p>
       </div>`;
     downloadBtn.classList.add('hidden');
   } else {
@@ -167,13 +167,13 @@ const displayImage = (container: HTMLElement, base64: string, mimeType: string) 
   img.style.width = '100%';
   img.style.height = '100%';
   img.style.objectFit = 'contain';
-  img.style.borderRadius = '8px';
+  img.style.borderRadius = 'var(--m3-shape-small)';
   container.appendChild(img);
 };
 
 const showError = (container: HTMLElement, message: string) => {
   container.innerHTML = `
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--md-sys-color-error); padding: 1rem; height: 100%; text-align: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--m3-error); padding: 1rem; height: 100%; text-align: center;">
         <i class="fas fa-circle-exclamation" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
         <p style="font-weight: 600;">An Error Occurred</p>
         <p style="font-size: 0.875rem;">${message}</p>
@@ -233,27 +233,27 @@ const renderSelectableLogos = () => {
   logoSelectionContainer.innerHTML = '';
   const noLogoOption = document.createElement('div');
   noLogoOption.style.aspectRatio = '1/1';
-  noLogoOption.style.backgroundColor = 'var(--md-sys-color-surface-container-high)';
-  noLogoOption.style.borderRadius = '8px';
+  noLogoOption.style.backgroundColor = 'var(--m3-surface)';
+  noLogoOption.style.borderRadius = 'var(--m3-shape-medium)';
   noLogoOption.style.display = 'flex';
   noLogoOption.style.alignItems = 'center';
   noLogoOption.style.justifyContent = 'center';
   noLogoOption.style.padding = '0.5rem';
   noLogoOption.style.cursor = 'pointer';
-  noLogoOption.style.border = '2px solid var(--md-sys-color-primary)';
-  noLogoOption.innerHTML = `<span style="font-size: 0.75rem; text-align: center; color: var(--md-sys-color-on-surface-variant);">No Logo</span>`;
+  noLogoOption.style.border = '2px solid var(--m3-primary)';
+  noLogoOption.innerHTML = `<span style="font-size: 0.75rem; text-align: center; color: var(--m3-on-surface-variant);">No Logo</span>`;
   noLogoOption.onclick = () => {
     selectedLogoBase64 = null;
     document.querySelectorAll('#logo-selection-container > div').forEach(el => (el as HTMLElement).style.borderColor = 'transparent');
-    noLogoOption.style.borderColor = 'var(--md-sys-color-primary)';
+    noLogoOption.style.borderColor = 'var(--m3-primary)';
   };
   logoSelectionContainer.appendChild(noLogoOption);
 
   brandKit.logos.forEach(logoData => {
     const logoOption = document.createElement('div');
     logoOption.style.aspectRatio = '1/1';
-    logoOption.style.backgroundColor = 'var(--md-sys-color-surface-container-high)';
-    logoOption.style.borderRadius = '8px';
+    logoOption.style.backgroundColor = 'var(--m3-surface)';
+    logoOption.style.borderRadius = 'var(--m3-shape-medium)';
     logoOption.style.display = 'flex';
     logoOption.style.alignItems = 'center';
     logoOption.style.justifyContent = 'center';
@@ -270,7 +270,7 @@ const renderSelectableLogos = () => {
     logoOption.onclick = () => {
       selectedLogoBase64 = logoData;
       document.querySelectorAll('#logo-selection-container > div').forEach(el => (el as HTMLElement).style.borderColor = 'transparent');
-      logoOption.style.borderColor = 'var(--md-sys-color-primary)';
+      logoOption.style.borderColor = 'var(--m3-primary)';
     };
     logoSelectionContainer.appendChild(logoOption);
   });
@@ -281,15 +281,16 @@ const renderProductCatalog = () => {
     productCatalogContainer.innerHTML = '';
     brandKit.products.forEach(product => {
         const card = document.createElement('div');
-        card.className = 'mdc-card mdc-card--outlined';
+        card.className = 'm3-card';
         card.style.position = 'relative';
+        card.style.padding = 'var(--m3-gap-2)';
         card.innerHTML = `
-            <div style="height: 6rem; background-image: url(data:${product.imageMimeType};base64,${product.imageBase64}); background-size: cover; background-position: center;"></div>
+            <div style="height: 6rem; border-radius: var(--m3-shape-small); background-image: url(data:${product.imageMimeType};base64,${product.imageBase64}); background-size: cover; background-position: center;"></div>
             <div style="padding: 0.5rem;">
-                <p class="mdc-typography--subtitle2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--md-sys-color-on-surface-variant);">${product.name}</p>
+                <p class="m3-title-sm" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--m3-on-surface-variant);">${product.name}</p>
             </div>
-            <button data-product-id="${product.id}" class="remove-product-btn mdc-icon-button material-icons" style="position: absolute; top: 0.25rem; right: 0.25rem; color: var(--md-sys-color-error);">
-                delete
+            <button data-product-id="${product.id}" class="remove-product-btn m3-icon-btn m3-state" style="position: absolute; top: 0.25rem; right: 0.25rem; color: var(--m3-error); --m3-state-hover: .2;">
+                <i class="material-icons">delete</i>
             </button>
         `;
         productCatalogContainer.appendChild(card);
@@ -310,7 +311,7 @@ const renderProductCatalog = () => {
 const renderTemplatePreview = () => {
     if (selectedTemplateId === null) {
         templatePreviewContainer.innerHTML = `
-            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--md-sys-color-on-surface-variant);">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--m3-on-surface-variant);">
                 Select a template to see a preview.
             </div>`;
         return;
@@ -326,34 +327,30 @@ const renderTemplatePreview = () => {
     const placeholders = template.prompt.match(/\[(.*?)\]/g) || [];
 
     // Highlight placeholders in prompt
-    const highlightedPrompt = template.prompt.replace(/\[(.*?)\]/g, '<code style="background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); padding: 2px 4px; border-radius: 4px;">$&</code>');
+    const highlightedPrompt = template.prompt.replace(/\[(.*?)\]/g, '<code style="background-color: var(--m3-primary-container); color: var(--m3-on-primary-container); padding: 2px 4px; border-radius: 4px;">$&</code>');
 
     templatePreviewContainer.innerHTML = `
-        <div style="display: flex; flex-direction: column; height: 100%;">
-            <h3 class="mdc-typography--headline6" style="margin-bottom: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--md-sys-color-on-surface);">${template.name}</h3>
-            <div style="flex-grow: 1; background-color: var(--md-sys-color-surface-container-lowest); border-radius: 8px; padding: 1rem; overflow-y: auto;">
-                <p style="white-space: pre-wrap; font-family: monospace; font-size: 0.875rem; color: var(--md-sys-color-on-surface-variant);">${highlightedPrompt}</p>
+        <div style="display: flex; flex-direction: column; height: 100%; gap: var(--m3-gap-4);">
+            <h3 class="m3-title-md" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--m3-on-surface);">${template.name}</h3>
+            <div style="flex-grow: 1; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium); padding: 1rem; overflow-y: auto;">
+                <p style="white-space: pre-wrap; font-family: monospace; font-size: 0.875rem; color: var(--m3-on-surface-variant);">${highlightedPrompt}</p>
             </div>
             ${placeholders.length > 0 ? `
-            <div style="margin-top: 1rem;">
-                <h4 class="mdc-typography--subtitle1" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 0.5rem;">Placeholders:</h4>
+            <div>
+                <h4 class="m3-title-sm" style="color: var(--m3-on-surface-variant); margin-bottom: 0.5rem;">Placeholders:</h4>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                    ${placeholders.map(p => `<span style="background-color: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); font-size: 0.75rem; padding: 4px 8px; border-radius: 16px;">${p}</span>`).join('')}
+                    ${placeholders.map(p => `<span style="background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); font-size: 0.75rem; padding: 4px 8px; border-radius: 16px;">${p}</span>`).join('')}
                 </div>
             </div>
             ` : ''}
-            <button data-template-id="${template.id}" class="use-template-btn mdc-button mdc-button--raised" style="margin-top: 1.5rem; width: 100%;">
-              <span class="mdc-button__label">Use This Template</span>
+            <button data-template-id="${template.id}" class="use-template-btn m3-btn m3-btn--filled m3-state" style="width: 100%;">
+              <span>Use This Template</span>
             </button>
         </div>
     `;
 
     document.querySelector('.use-template-btn')?.addEventListener('click', () => {
         promptInput.value = template.prompt;
-        // Need to update the Material text field label state
-        const promptField = (window as any).mdc.textField.MDCTextField.attachTo(document.getElementById('prompt-input-field'));
-        promptField.value = template.prompt;
-        
         navigateTo('design-studio');
     });
 };
@@ -363,7 +360,7 @@ const renderTemplateList = () => {
     const filteredTemplates = brandKit.templates.filter(t => t.name.toLowerCase().includes(searchTerm));
 
     if (filteredTemplates.length === 0) {
-        templateListContainer.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--md-sys-color-on-surface-variant);">No templates found.</div>`;
+        templateListContainer.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--m3-on-surface-variant);">No templates found.</div>`;
         return;
     }
 
@@ -373,15 +370,15 @@ const renderTemplateList = () => {
         const isActive = selectedTemplateId === template.id;
         item.style.padding = '1rem';
         item.style.cursor = 'pointer';
-        item.style.borderLeft = `4px solid ${isActive ? 'var(--md-sys-color-primary)' : 'transparent'}`;
-        item.style.backgroundColor = isActive ? 'var(--md-sys-color-surface-container-high)' : 'transparent';
+        item.style.borderLeft = `4px solid ${isActive ? 'var(--m3-primary)' : 'transparent'}`;
+        item.style.backgroundColor = isActive ? 'var(--m3-surface-variant)' : 'transparent';
 
         item.innerHTML = `
-            <p class="mdc-typography--subtitle1" style="color: var(--md-sys-color-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.name}</p>
-            <p class="mdc-typography--body2" style="color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.prompt}</p>
+            <p class="m3-title-sm" style="color: var(--m3-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.name}</p>
+            <p class="m3-body-md" style="color: var(--m3-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${template.prompt}</p>
             <div style="text-align: right; margin-top: 0.5rem;">
-                 <button data-template-id="${template.id}" class="edit-template-btn mdc-button">Edit</button>
-                 <button data-template-id="${template.id}" class="delete-template-btn mdc-button">Delete</button>
+                 <button data-template-id="${template.id}" class="edit-template-btn m3-btn m3-btn--text m3-state">Edit</button>
+                 <button data-template-id="${template.id}" class="delete-template-btn m3-btn m3-btn--text m3-state" style="color: var(--m3-error);">Delete</button>
             </div>
         `;
         item.addEventListener('click', (e) => {
@@ -432,12 +429,7 @@ const openTemplateModal = (id: number | null = null) => {
         templateNameInput.value = '';
         templatePromptInput.value = '';
     }
-     // Update MDC text fields
-    document.querySelectorAll('#template-modal .mdc-text-field').forEach(el => {
-        const field = (window as any).mdc.textField.MDCTextField.attachTo(el);
-        field.value = (el.querySelector('input, textarea') as HTMLInputElement).value;
-    });
-    templateModalInstance.open();
+    templateModal.setAttribute('open', '');
 };
 
 const handleSaveTemplate = () => {
@@ -461,7 +453,7 @@ const handleSaveTemplate = () => {
 
     saveTemplates();
     renderTemplateList();
-    templateModalInstance.close();
+    templateModal.removeAttribute('open');
 };
 
 const renderBrandKitUI = () => {
@@ -473,17 +465,17 @@ const renderBrandKitUI = () => {
         swatch.style.position = 'relative';
         swatch.style.width = '4rem';
         swatch.style.height = '4rem';
-        swatch.style.borderRadius = '8px';
-        swatch.style.border = '2px solid var(--md-sys-color-outline)';
+        swatch.style.borderRadius = 'var(--m3-shape-small)';
+        swatch.style.border = '2px solid var(--m3-outline)';
         swatch.style.backgroundColor = color;
         const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = 'close';
-        removeBtn.className = 'mdc-icon-button material-icons';
+        removeBtn.innerHTML = '<i class="material-icons" style="font-size: 1rem;">close</i>';
+        removeBtn.className = 'm3-icon-btn m3-state';
         removeBtn.style.position = 'absolute';
         removeBtn.style.top = '-0.75rem';
         removeBtn.style.right = '-0.75rem';
-        removeBtn.style.backgroundColor = 'var(--md-sys-color-error-container)';
-        removeBtn.style.color = 'var(--md-sys-color-on-error-container)';
+        removeBtn.style.backgroundColor = 'var(--m3-error-container)';
+        removeBtn.style.color = 'var(--m3-on-error-container)';
         removeBtn.style.width = '24px';
         removeBtn.style.height = '24px';
 
@@ -499,7 +491,7 @@ const renderBrandKitUI = () => {
     brandLogosContainer.innerHTML = '';
     brandKit.logos.forEach((logoData, index) => {
         const logoWrapper = document.createElement('div');
-        logoWrapper.className = 'mdc-card mdc-card--outlined';
+        logoWrapper.className = 'm3-card';
         logoWrapper.style.position = 'relative';
         logoWrapper.style.padding = '0.5rem';
         const img = document.createElement('img');
@@ -509,13 +501,13 @@ const renderBrandKitUI = () => {
         img.style.objectFit = 'contain';
         logoWrapper.appendChild(img);
         const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = 'close';
-        removeBtn.className = 'mdc-icon-button material-icons';
+        removeBtn.innerHTML = '<i class="material-icons" style="font-size: 1rem">close</i>';
+        removeBtn.className = 'm3-icon-btn m3-state';
         removeBtn.style.position = 'absolute';
         removeBtn.style.top = '0';
         removeBtn.style.right = '0';
-        removeBtn.style.backgroundColor = 'var(--md-sys-color-error-container)';
-        removeBtn.style.color = 'var(--md-sys-color-on-error-container)';
+        removeBtn.style.backgroundColor = 'var(--m3-error-container)';
+        removeBtn.style.color = 'var(--m3-on-error-container)';
         removeBtn.style.width = '24px';
         removeBtn.style.height = '24px';
         removeBtn.onclick = () => {
@@ -720,28 +712,28 @@ const renderAutomationUI = () => {
     automationStatusText.textContent = automationState.enabled ? 'Enabled' : 'Disabled';
     automationBtnText.textContent = automationState.enabled ? 'Disable Daily Automation' : 'Enable Daily Automation';
     if(automationState.enabled) {
-        automationToggleBtn.style.backgroundColor = 'var(--md-sys-color-error)';
-        automationToggleBtn.style.color = 'var(--md-sys-color-on-error)';
+        automationToggleBtn.style.backgroundColor = 'var(--m3-error)';
+        automationToggleBtn.style.color = 'var(--m3-on-error)';
     } else {
-        automationToggleBtn.style.backgroundColor = 'var(--md-sys-color-primary)';
-        automationToggleBtn.style.color = 'var(--md-sys-color-on-primary)';
+        automationToggleBtn.style.backgroundColor = 'var(--m3-primary)';
+        automationToggleBtn.style.color = 'var(--m3-on-primary)';
     }
-    automationStatusIndicator.style.backgroundColor = automationState.enabled ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline)';
+    automationStatusIndicator.style.backgroundColor = automationState.enabled ? 'var(--m3-primary)' : 'var(--m3-outline)';
 
 
     // Render history
     automationHistoryContainer.innerHTML = '';
     if (automationHistory.length === 0) {
-        automationHistoryContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--md-sys-color-on-surface-variant); padding: 2rem;">No designs generated yet.</div>`;
+        automationHistoryContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--m3-on-surface-variant); padding: 2rem;">No designs generated yet.</div>`;
     } else {
         [...automationHistory].reverse().forEach(item => {
             const card = document.createElement('div');
-            card.className = 'mdc-card mdc-card--outlined';
+            card.className = 'm3-card';
             card.innerHTML = `
-                <div style="height: 10rem; background-image: url(data:${item.imageMimeType};base64,${item.imageBase64}); background-size: cover; background-position: center;"></div>
+                <div style="height: 10rem; border-radius: var(--m3-shape-small); background-image: url(data:${item.imageMimeType};base64,${item.imageBase64}); background-size: cover; background-position: center;"></div>
                 <div style="padding: 0.75rem;">
-                    <p class="mdc-typography--subtitle1">${new Date(item.date).toLocaleDateString()}</p>
-                    <p class="mdc-typography--body2" style="color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.prompt}">${item.prompt}</p>
+                    <p class="m3-title-sm">${new Date(item.date).toLocaleDateString()}</p>
+                    <p class="m3-body-md" style="color: var(--m3-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.prompt}">${item.prompt}</p>
                 </div>
             `;
             automationHistoryContainer.appendChild(card);
@@ -759,19 +751,19 @@ const runDailyAutomation = async () => {
     }
 
     if (!automationState.prompt || brandKit.products.length === 0) {
-        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-error);">Automation is enabled, but setup is incomplete. Please add a prompt and at least one product to the <strong>Product Catalog</strong> in your Brand Kit.</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--m3-error);">Automation is enabled, but setup is incomplete. Please add a prompt and at least one product to the <strong>Product Catalog</strong> in your Brand Kit.</p>`;
         return;
     }
 
     const hasRunToday = automationHistory.some(h => h.date === today);
     if (hasRunToday) {
-        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Today's design has already been generated.</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--m3-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Today's design has already been generated.</p>`;
         return;
     }
 
     todayStatusContainer.innerHTML = `
-        <div style="display: flex; align-items: center; color: var(--md-sys-color-primary);">
-            <div class="mdc-circular-progress mdc-circular-progress--indeterminate" style="width:24px;height:24px; margin-right: 1rem;" role="progressbar"><div class="mdc-circular-progress__determinate-container"><svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24"><circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/></svg></div><div class="mdc-circular-progress__indeterminate-container"><div class="mdc-circular-progress__spinner-layer"><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div><div class="mdc-circular-progress__gap-patch"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right"><svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/></svg></div></div></div></div>
+        <div style="display: flex; align-items: center; color: var(--m3-primary);">
+            <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-right: 1rem;"></i>
             <span>Generating design for ${today}...</span>
         </div>`;
     
@@ -813,25 +805,28 @@ const runDailyAutomation = async () => {
         });
         saveAutomationHistory();
         renderAutomationUI();
-        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Successfully generated today's design!</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--m3-primary);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">check_circle</i>Successfully generated today's design!</p>`;
     } else {
-        todayStatusContainer.innerHTML = `<p style="color: var(--md-sys-color-error);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">error</i>Failed to generate today's design. Error: ${result.error}</p>`;
+        todayStatusContainer.innerHTML = `<p style="color: var(--m3-error);"><i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">error</i>Failed to generate today's design. Error: ${result.error}</p>`;
     }
 };
 
 
 // --- Event Listeners Setup ---
 const pages = {
-  'design-studio': { page: designStudioPage },
-  'brand-kit': { page: brandKitPage },
-  'automation': { page: automationPage },
+  'design-studio': { page: designStudioPage, button: navDesignStudio },
+  'brand-kit': { page: brandKitPage, button: navBrandKit },
+  'automation': { page: automationPage, button: navAutomation },
 };
 
 const navigateTo = (pageKey: keyof typeof pages) => {
-  Object.values(pages).forEach(({ page }) => {
-    page.classList.remove('active');
-  });
+  const navButtons = [navDesignStudio, navBrandKit, navAutomation];
+  
+  Object.values(pages).forEach(({ page }) => page.classList.remove('active'));
+  navButtons.forEach(btn => btn.classList.remove('active-tab'));
+
   pages[pageKey].page.classList.add('active');
+  pages[pageKey].button.classList.add('active-tab');
 
    if (pageKey === 'design-studio') {
         renderSelectableLogos();
@@ -841,7 +836,7 @@ const navigateTo = (pageKey: keyof typeof pages) => {
 
 // Design Studio Listeners
 imageUploadArea.addEventListener('click', () => imageUploadInput.click());
-imageUploadArea.addEventListener('dragover', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'var(--md-sys-color-surface-container-high)'; });
+imageUploadArea.addEventListener('dragover', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'var(--m3-surface-variant)'; });
 imageUploadArea.addEventListener('dragleave', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'transparent'; });
 imageUploadArea.addEventListener('drop', (e) => {
   e.preventDefault();
@@ -859,11 +854,9 @@ downloadBtn.addEventListener('click', handleDownloadClick);
 saveGuidelinesBtn.addEventListener('click', () => {
     brandKit.guidelines = styleGuidelinesInput.value;
     saveGuidelines();
-    // Maybe add a snackbar here later
 });
 colorPicker.addEventListener('input', () => { 
-    const hexField = (window as any).mdc.textField.MDCTextField.attachTo(document.getElementById('color-hex-field'));
-    hexField.value = colorPicker.value;
+    colorHexInput.value = colorPicker.value;
 });
 colorHexInput.addEventListener('input', () => { colorPicker.value = colorHexInput.value; });
 addColorBtn.addEventListener('click', () => {
@@ -893,7 +886,7 @@ newProductImageUpload.addEventListener('change', async (e) => {
         const { data, mimeType } = await fileToGenerativePart(file);
         newProductImage = { data, mimeType };
         newProductImageText.textContent = file.name;
-        newProductImageArea.style.borderColor = 'var(--md-sys-color-primary)';
+        newProductImageArea.style.borderColor = 'var(--m3-primary)';
     }
 });
 addProductBtn.addEventListener('click', () => {
@@ -919,13 +912,8 @@ addProductBtn.addEventListener('click', () => {
     newProductDescription.value = '';
     newProductImage = null;
     newProductImageText.textContent = 'Click to upload';
-    newProductImageArea.style.borderColor = 'var(--md-sys-color-outline)';
+    newProductImageArea.style.borderColor = 'var(--m3-outline)';
     newProductImageUpload.value = '';
-    // Reset MDC text fields
-    document.querySelectorAll('#add-product-btn').forEach(el => {
-        const field = (window as any).mdc.textField.MDCTextField.attachTo(el.previousElementSibling);
-        if (field) field.value = '';
-    });
 });
 
 // Brand Kit - Design Templates Listeners
@@ -951,24 +939,28 @@ automationPromptInput.addEventListener('change', () => {
 themeSwitcherButtons.forEach(button => {
     button.addEventListener('click', () => {
         const theme = (button as HTMLButtonElement).dataset.theme;
-        document.body.className = `mdc-typography ${theme}`;
+        document.body.classList.remove('theme-light', 'theme-dark');
+        document.body.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark');
     });
 });
 
 
 // --- Initial App Load ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize MDC components
-    (window as any).mdc.autoInit();
-    templateModalInstance = new (window as any).mdc.dialog.MDCDialog(templateModal);
-
-    const tabBar = new (window as any).mdc.tabBar.MDCTabBar(document.querySelector('.mdc-tab-bar'));
-    tabBar.listen('MDCTabBar:activated', (event: any) => {
-      const index = event.detail.index;
-      const pageKey = ['design-studio', 'brand-kit', 'automation'][index];
-      navigateTo(pageKey as keyof typeof pages);
+    // Modal Listeners
+    closeTemplateModalBtn.addEventListener('click', () => templateModal.removeAttribute('open'));
+    templateModal.addEventListener('click', (e) => {
+        if (e.target === templateModal) {
+            templateModal.removeAttribute('open');
+        }
     });
 
+    // Navigation Listeners
+    navDesignStudio.addEventListener('click', () => navigateTo('design-studio'));
+    navBrandKit.addEventListener('click', () => navigateTo('brand-kit'));
+    navAutomation.addEventListener('click', () => navigateTo('automation'));
+
+    // Load data and render UI
     loadBrandKit();
     loadAutomationState();
     loadAutomationHistory();
