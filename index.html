@@ -227,6 +227,39 @@
                         <!-- Product cards will be injected here -->
                     </div>
                 </div>
+
+                <!-- Design Templates -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">Design Templates</h2>
+                        <button id="add-template-btn" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition text-sm">
+                            <i class="fa-solid fa-plus mr-2"></i>New Template
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Left column: Search and List -->
+                        <div class="md:col-span-1 flex flex-col gap-4">
+                            <div>
+                                <label for="template-search-input" class="sr-only">Search Templates</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-search text-gray-400"></i>
+                                    </div>
+                                    <input type="search" id="template-search-input" placeholder="Search templates..." class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition">
+                                </div>
+                            </div>
+                            <div id="template-list-container" class="bg-gray-900 rounded-lg h-96 overflow-y-auto">
+                                <!-- Template list items will be injected here -->
+                            </div>
+                        </div>
+                        <!-- Right column: Preview -->
+                        <div id="template-preview-container" class="md:col-span-2 bg-gray-900 rounded-lg p-6">
+                            <div class="flex items-center justify-center h-full text-gray-500">
+                                Select a template to see a preview.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
       </div>
@@ -275,6 +308,34 @@
       </div>
 
     </div>
+
+    <!-- Template Modal -->
+    <div id="template-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl">
+            <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+                <h3 id="template-modal-title" class="text-2xl font-bold">Add New Template</h3>
+                <button id="close-template-modal-btn" class="text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <input type="hidden" id="template-id-input">
+                <div class="mb-4">
+                    <label for="template-name-input" class="block text-lg font-semibold mb-2">Template Name</label>
+                    <input type="text" id="template-name-input" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition" placeholder="e.g., Weekly Product Spotlight">
+                </div>
+                <div>
+                    <label for="template-prompt-input" class="block text-lg font-semibold mb-2">Template Prompt</label>
+                    <textarea id="template-prompt-input" rows="8" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition" placeholder="e.g., Create a vibrant Instagram post for [PRODUCT_NAME]. Use a [COLOR] background."></textarea>
+                    <p class="text-xs text-gray-400 mt-2">Use placeholders like <code class="bg-gray-900 px-1 rounded">[PRODUCT_NAME]</code>. They will be highlighted in the preview.</p>
+                </div>
+            </div>
+            <div class="p-6 bg-gray-900 rounded-b-lg text-right">
+                <button id="save-template-btn" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition">Save Template</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>

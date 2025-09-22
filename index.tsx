@@ -45,6 +45,21 @@ const newProductDescription = document.getElementById('new-product-description')
 const addProductBtn = document.getElementById('add-product-btn') as HTMLButtonElement;
 const productCatalogContainer = document.getElementById('product-catalog-container') as HTMLDivElement;
 
+// Brand Kit - Design Templates Elements
+const addTemplateBtn = document.getElementById('add-template-btn') as HTMLButtonElement;
+const templateSearchInput = document.getElementById('template-search-input') as HTMLInputElement;
+const templateListContainer = document.getElementById('template-list-container') as HTMLDivElement;
+const templatePreviewContainer = document.getElementById('template-preview-container') as HTMLDivElement;
+
+// Template Modal Elements
+const templateModal = document.getElementById('template-modal') as HTMLDivElement;
+const templateModalTitle = document.getElementById('template-modal-title') as HTMLHeadingElement;
+const closeTemplateModalBtn = document.getElementById('close-template-modal-btn') as HTMLButtonElement;
+const templateIdInput = document.getElementById('template-id-input') as HTMLInputElement;
+const templateNameInput = document.getElementById('template-name-input') as HTMLInputElement;
+const templatePromptInput = document.getElementById('template-prompt-input') as HTMLTextAreaElement;
+const saveTemplateBtn = document.getElementById('save-template-btn') as HTMLButtonElement;
+
 
 // Automation Elements
 const automationPromptInput = document.getElementById('automation-prompt-input') as HTMLTextAreaElement;
@@ -65,6 +80,12 @@ type Product = {
     imageMimeType: string;
 };
 
+type Template = {
+    id: number;
+    name: string;
+    prompt: string;
+};
+
 let originalImageBase64: string | null = null;
 let originalImageMimeType: string | null = null;
 let selectedLogoBase64: string | null = null;
@@ -72,17 +93,20 @@ let generatedImageBase64: string | null = null;
 let generatedImageMimeType: string | null = null;
 let isLoading = false;
 let newProductImage: { data: string; mimeType: string; } | null = null;
+let selectedTemplateId: number | null = null;
 
 let brandKit: {
     guidelines: string;
     colors: string[];
     logos: string[];
     products: Product[];
+    templates: Template[];
 } = {
     guidelines: '',
     colors: [],
     logos: [],
-    products: []
+    products: [],
+    templates: []
 };
 let automationState = {
     enabled: false,
@@ -170,7 +194,7 @@ const loadFromLocalStorage = (key: string, defaultValue: any) => {
 // --- Brand Kit Functions ---
 const saveBrandKit = () => saveToLocalStorage('stashBrandKit', brandKit);
 const loadBrandKit = () => {
-    brandKit = loadFromLocalStorage('stashBrandKit', { guidelines: '', colors: [], logos: [], products: [] });
+    brandKit = loadFromLocalStorage('stashBrandKit', { guidelines: '', colors: [], logos: [], products: [], templates: [] });
 };
 const saveAutomationState = () => saveToLocalStorage('stashAutomationState', automationState);
 const loadAutomationState = () => {
@@ -239,6 +263,152 @@ const renderProductCatalog = () => {
 };
 
 
+// --- Brand Kit - Design Templates ---
+const renderTemplatePreview = () => {
+    if (selectedTemplateId === null) {
+        templatePreviewContainer.innerHTML = `
+            <div class="flex items-center justify-center h-full text-gray-500">
+                Select a template to see a preview.
+            </div>`;
+        return;
+    }
+
+    const template = brandKit.templates.find(t => t.id === selectedTemplateId);
+    if (!template) {
+        selectedTemplateId = null;
+        renderTemplatePreview();
+        return;
+    }
+
+    const placeholders = template.prompt.match(/\[(.*?)\]/g) || [];
+
+    // Highlight placeholders in prompt
+    const highlightedPrompt = template.prompt.replace(/\[(.*?)\]/g, '<code class="bg-cyan-900 text-cyan-300 px-1 rounded-sm">$&</code>');
+
+    templatePreviewContainer.innerHTML = `
+        <div class="flex flex-col h-full">
+            <h3 class="text-xl font-bold text-white mb-4 truncate">${template.name}</h3>
+            <div class="flex-grow bg-gray-800 rounded-lg p-4 overflow-y-auto">
+                <p class="text-gray-300 whitespace-pre-wrap font-mono text-sm">${highlightedPrompt}</p>
+            </div>
+            ${placeholders.length > 0 ? `
+            <div class="mt-4">
+                <h4 class="font-semibold text-gray-400 mb-2">Placeholders:</h4>
+                <div class="flex flex-wrap gap-2">
+                    ${placeholders.map(p => `<span class="bg-gray-700 text-xs text-gray-300 px-2 py-1 rounded-full">${p}</span>`).join('')}
+                </div>
+            </div>
+            ` : ''}
+            <button data-template-id="${template.id}" class="use-template-btn mt-6 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition">Use This Template</button>
+        </div>
+    `;
+
+    document.querySelector('.use-template-btn')?.addEventListener('click', () => {
+        promptInput.value = template.prompt;
+        navigateTo('design-studio');
+    });
+};
+
+const renderTemplateList = () => {
+    const searchTerm = templateSearchInput.value.toLowerCase();
+    const filteredTemplates = brandKit.templates.filter(t => t.name.toLowerCase().includes(searchTerm));
+
+    if (filteredTemplates.length === 0) {
+        templateListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No templates found.</div>`;
+        return;
+    }
+
+    templateListContainer.innerHTML = '';
+    filteredTemplates.forEach(template => {
+        const item = document.createElement('div');
+        item.className = `p-4 cursor-pointer hover:bg-gray-700 border-l-4 ${selectedTemplateId === template.id ? 'bg-gray-700 border-cyan-400' : 'border-transparent'}`;
+        item.innerHTML = `
+            <p class="font-semibold text-white truncate">${template.name}</p>
+            <p class="text-sm text-gray-400 truncate">${template.prompt}</p>
+            <div class="text-right mt-2">
+                 <button data-template-id="${template.id}" class="edit-template-btn text-gray-400 hover:text-white text-xs mr-2"><i class="fa-solid fa-pencil"></i> Edit</button>
+                 <button data-template-id="${template.id}" class="delete-template-btn text-red-500 hover:text-red-400 text-xs"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+        `;
+        item.addEventListener('click', (e) => {
+            if ((e.target as HTMLElement).closest('button')) return; // Ignore clicks on buttons
+            selectedTemplateId = template.id;
+            renderTemplateList();
+            renderTemplatePreview();
+        });
+        templateListContainer.appendChild(item);
+    });
+
+    document.querySelectorAll('.edit-template-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const templateId = parseInt((e.currentTarget as HTMLButtonElement).dataset.templateId, 10);
+            openTemplateModal(templateId);
+        });
+    });
+
+    document.querySelectorAll('.delete-template-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const templateId = parseInt((e.currentTarget as HTMLButtonElement).dataset.templateId, 10);
+            if (confirm('Are you sure you want to delete this template?')) {
+                brandKit.templates = brandKit.templates.filter(t => t.id !== templateId);
+                if (selectedTemplateId === templateId) {
+                    selectedTemplateId = null;
+                }
+                saveBrandKit();
+                renderTemplateList();
+                renderTemplatePreview();
+            }
+        });
+    });
+};
+
+const openTemplateModal = (id: number | null = null) => {
+    templateIdInput.value = id ? id.toString() : '';
+    if (id) {
+        const template = brandKit.templates.find(t => t.id === id);
+        if (template) {
+            templateModalTitle.textContent = 'Edit Template';
+            templateNameInput.value = template.name;
+            templatePromptInput.value = template.prompt;
+        }
+    } else {
+        templateModalTitle.textContent = 'Add New Template';
+        templateNameInput.value = '';
+        templatePromptInput.value = '';
+    }
+    templateModal.classList.remove('hidden');
+};
+
+const closeTemplateModal = () => {
+    templateModal.classList.add('hidden');
+};
+
+const handleSaveTemplate = () => {
+    const id = templateIdInput.value ? parseInt(templateIdInput.value, 10) : null;
+    const name = templateNameInput.value.trim();
+    const prompt = templatePromptInput.value.trim();
+
+    if (!name || !prompt) {
+        alert('Please provide a name and a prompt for the template.');
+        return;
+    }
+
+    if (id) { // Editing existing
+        const index = brandKit.templates.findIndex(t => t.id === id);
+        if (index > -1) {
+            brandKit.templates[index] = { id, name, prompt };
+        }
+    } else { // Creating new
+        brandKit.templates.push({ id: Date.now(), name, prompt });
+    }
+
+    saveBrandKit();
+    renderTemplateList();
+    closeTemplateModal();
+};
+
 const renderBrandKitUI = () => {
     styleGuidelinesInput.value = brandKit.guidelines || '';
     
@@ -280,6 +450,8 @@ const renderBrandKitUI = () => {
     });
     renderSelectableLogos();
     renderProductCatalog();
+    renderTemplateList();
+    renderTemplatePreview();
 };
 
 // --- Core Generation Logic ---
@@ -618,6 +790,12 @@ addProductBtn.addEventListener('click', () => {
     newProductImageArea.classList.remove('border-cyan-400');
     newProductImageUpload.value = '';
 });
+
+// Brand Kit - Design Templates Listeners
+addTemplateBtn.addEventListener('click', () => openTemplateModal());
+closeTemplateModalBtn.addEventListener('click', closeTemplateModal);
+saveTemplateBtn.addEventListener('click', handleSaveTemplate);
+templateSearchInput.addEventListener('input', renderTemplateList);
 
 
 // Automation Listeners
