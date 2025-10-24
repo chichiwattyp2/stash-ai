@@ -10,14 +10,18 @@ const STASH_LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2gAAAB
 
 // --- DOM Element References ---
 const designStudioPage = document.getElementById('design-studio-page') as HTMLElement;
+const calendarPage = document.getElementById('calendar-page') as HTMLElement;
 const brandKitPage = document.getElementById('brand-kit-page') as HTMLElement;
 const automationPage = document.getElementById('automation-page') as HTMLElement;
 const navDesignStudio = document.getElementById('nav-design-studio') as HTMLButtonElement;
+const navCalendar = document.getElementById('nav-calendar') as HTMLButtonElement;
 const navBrandKit = document.getElementById('nav-brand-kit') as HTMLButtonElement;
 const navAutomation = document.getElementById('nav-automation') as HTMLButtonElement;
 const themeSwitcherButtons = document.querySelectorAll('.theme-switcher button');
 
 // Design Studio Elements
+const formatButtons = document.querySelectorAll('.format-btn') as NodeListOf<HTMLButtonElement>;
+const categorySelect = document.getElementById('category-select') as HTMLSelectElement;
 const imageUploadArea = document.getElementById('image-upload-area') as HTMLDivElement;
 const imageUploadInput = document.getElementById('image-upload') as HTMLInputElement;
 const promptInput = document.getElementById('prompt-input') as HTMLTextAreaElement;
@@ -25,9 +29,13 @@ const logoSelectionContainer = document.getElementById('logo-selection-container
 const generateBtn = document.getElementById('generate-btn') as HTMLButtonElement;
 const generateBtnText = document.getElementById('generate-btn-text') as HTMLSpanElement;
 const generateSpinner = document.getElementById('generate-spinner') as HTMLSpanElement;
-const originalImageContainer = document.getElementById('original-image-container') as HTMLDivElement;
-const generatedImageContainer = document.getElementById('generated-image-container') as HTMLDivElement;
-const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+const instagramPreviewContainer = document.getElementById('instagram-preview-container') as HTMLDivElement;
+const captionOutput = document.getElementById('caption-output') as HTMLTextAreaElement;
+const hashtagsOutput = document.getElementById('hashtags-output') as HTMLTextAreaElement;
+const generateCaptionBtn = document.getElementById('generate-caption-btn') as HTMLButtonElement;
+const generateHashtagsBtn = document.getElementById('generate-hashtags-btn') as HTMLButtonElement;
+const downloadAllBtn = document.getElementById('download-all-btn') as HTMLButtonElement;
+const addToCalendarBtn = document.getElementById('add-to-calendar-btn') as HTMLButtonElement;
 
 // Brand Kit Elements
 const styleGuidelinesInput = document.getElementById('style-guidelines-input') as HTMLTextAreaElement;
@@ -75,6 +83,36 @@ const automationStatusText = document.getElementById('automation-status-text') a
 const automationTodayStatus = document.getElementById('automation-today-status') as HTMLDivElement;
 const automationHistoryContainer = document.getElementById('automation-history-container') as HTMLDivElement;
 
+// Calendar Elements
+const calendarWeekView = document.getElementById('calendar-week-view') as HTMLDivElement;
+const calendarMonthView = document.getElementById('calendar-month-view') as HTMLDivElement;
+const calendarViewWeekBtn = document.getElementById('calendar-view-week') as HTMLButtonElement;
+const calendarViewMonthBtn = document.getElementById('calendar-view-month') as HTMLButtonElement;
+const calendarPrevBtn = document.getElementById('calendar-prev') as HTMLButtonElement;
+const calendarNextBtn = document.getElementById('calendar-next') as HTMLButtonElement;
+const calendarTitle = document.getElementById('calendar-title') as HTMLHeadingElement;
+const calendarWeekGrid = document.getElementById('calendar-week-grid') as HTMLDivElement;
+const calendarMonthGrid = document.getElementById('calendar-month-grid') as HTMLDivElement;
+const batchGenerateBtn = document.getElementById('batch-generate-btn') as HTMLButtonElement;
+const scheduledContentDetails = document.getElementById('scheduled-content-details') as HTMLDivElement;
+const scheduledImagePreview = document.getElementById('scheduled-image-preview') as HTMLDivElement;
+const scheduledDateTime = document.getElementById('scheduled-datetime') as HTMLInputElement;
+const scheduledCaption = document.getElementById('scheduled-caption') as HTMLTextAreaElement;
+const scheduledHashtags = document.getElementById('scheduled-hashtags') as HTMLTextAreaElement;
+const saveScheduledBtn = document.getElementById('save-scheduled-btn') as HTMLButtonElement;
+const deleteScheduledBtn = document.getElementById('delete-scheduled-btn') as HTMLButtonElement;
+
+// Batch Modal Elements
+const batchModal = document.getElementById('batch-modal') as HTMLDivElement;
+const closeBatchModalBtn = document.getElementById('close-batch-modal-btn') as HTMLButtonElement;
+const batchDaysInput = document.getElementById('batch-days-input') as HTMLInputElement;
+const batchTemplateSelect = document.getElementById('batch-template-select') as HTMLSelectElement;
+const batchFormatSelect = document.getElementById('batch-format-select') as HTMLSelectElement;
+const batchProgress = document.getElementById('batch-progress') as HTMLDivElement;
+const batchProgressBar = document.getElementById('batch-progress-bar') as HTMLDivElement;
+const batchProgressText = document.getElementById('batch-progress-text') as HTMLParagraphElement;
+const startBatchBtn = document.getElementById('start-batch-btn') as HTMLButtonElement;
+
 
 // --- App State ---
 type Product = {
@@ -91,14 +129,36 @@ type Template = {
     prompt: string;
 };
 
+type ScheduledPost = {
+    id: number;
+    date: string;
+    imageBase64: string;
+    imageMimeType: string;
+    caption: string;
+    hashtags: string;
+    format: string;
+    category: string;
+};
+
+let selectedFormat = 'square';
+let selectedAspectRatio = '1/1';
+let selectedCategory = 'product';
 let originalImageBase64: string | null = null;
 let originalImageMimeType: string | null = null;
 let selectedLogoBase64: string | null = null;
 let generatedImageBase64: string | null = null;
 let generatedImageMimeType: string | null = null;
+let generatedCaption: string = '';
+let generatedHashtags: string = '';
 let isLoading = false;
 let newProductImage: { data: string; mimeType: string; } | null = null;
 let selectedTemplateId: number | null = null;
+let selectedScheduledPostId: number | null = null;
+
+// Calendar state
+let currentCalendarDate = new Date();
+let calendarView: 'week' | 'month' = 'week';
+let scheduledPosts: ScheduledPost[] = [];
 
 let brandKit: {
     guidelines: string;
@@ -147,13 +207,14 @@ const updateLoadingState = (loading: boolean) => {
   if (isLoading) {
     generateBtnText.classList.add('hidden');
     generateSpinner.classList.remove('hidden');
-    generatedImageContainer.innerHTML = `
+    instagramPreviewContainer.innerHTML = `
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--m3-on-surface-variant); height: 100%;">
           <i class="fas fa-spinner fa-spin" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
           <p>Our AI designer is crafting your image...</p>
           <p style="font-size: 0.875rem; color: var(--m3-outline);">This can take a moment.</p>
       </div>`;
-    downloadBtn.classList.add('hidden');
+    downloadAllBtn.classList.add('hidden');
+    addToCalendarBtn.classList.add('hidden');
   } else {
     generateBtnText.classList.remove('hidden');
     generateSpinner.classList.add('hidden');
@@ -198,6 +259,11 @@ const loadFromLocalStorage = (key: string, defaultValue: any) => {
         return defaultValue;
     }
 }
+
+const saveScheduledPosts = () => saveToLocalStorage('stashScheduledPosts', scheduledPosts);
+const loadScheduledPosts = () => {
+    scheduledPosts = loadFromLocalStorage('stashScheduledPosts', []);
+};
 
 // --- Brand Kit Functions ---
 const saveGuidelines = () => saveToLocalStorage('stashBrandKit_guidelines', brandKit.guidelines);
@@ -565,6 +631,268 @@ const performGeneration = async (
     }
 };
 
+// --- Instagram Features ---
+const handleFormatSelection = (format: string, ratio: string) => {
+    selectedFormat = format;
+    selectedAspectRatio = ratio;
+
+    // Update button states
+    formatButtons.forEach(btn => {
+        if (btn.dataset.format === format) {
+            btn.style.borderColor = 'var(--m3-primary)';
+            btn.classList.add('active');
+        } else {
+            btn.style.borderColor = 'transparent';
+            btn.classList.remove('active');
+        }
+    });
+
+    // Update preview container aspect ratio
+    instagramPreviewContainer.style.aspectRatio = ratio;
+};
+
+const generateCaption = async () => {
+    if (!generatedImageBase64 || !originalImageBase64) {
+        alert('Please generate a design first.');
+        return;
+    }
+
+    generateCaptionBtn.disabled = true;
+    generateCaptionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Generating...</span>';
+
+    try {
+        const category = categorySelect.value;
+        const prompt = promptInput.value || 'your product';
+
+        let captionPrompt = `Create an engaging Instagram caption for a ${category} post about ${prompt}. `;
+        captionPrompt += `Keep it concise (100-150 characters), include a call-to-action, and match the Stash brand voice. `;
+        captionPrompt += `Brand guidelines: ${brandKit.guidelines || 'Professional, friendly, and authentic'}. `;
+        captionPrompt += `Only return the caption text, no hashtags.`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.0-flash-exp',
+            contents: { parts: [{ text: captionPrompt }] },
+        });
+
+        const caption = response.text?.trim() || 'Check out our latest!';
+        generatedCaption = caption;
+        captionOutput.value = caption;
+    } catch (e) {
+        console.error(e);
+        alert('Failed to generate caption. Please try again.');
+    } finally {
+        generateCaptionBtn.disabled = false;
+        generateCaptionBtn.innerHTML = '<i class="material-icons">text_fields</i> <span>Generate Caption</span>';
+    }
+};
+
+const generateHashtags = async () => {
+    if (!generatedImageBase64 || !originalImageBase64) {
+        alert('Please generate a design first.');
+        return;
+    }
+
+    generateHashtagsBtn.disabled = true;
+    generateHashtagsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Generating...</span>';
+
+    try {
+        const category = categorySelect.value;
+        const prompt = promptInput.value || 'your product';
+
+        let hashtagPrompt = `Generate 15-20 relevant Instagram hashtags for a ${category} post about ${prompt}. `;
+        hashtagPrompt += `Include a mix of popular, niche, and branded hashtags. `;
+        hashtagPrompt += `Include #stash and other relevant tags. Return only the hashtags separated by spaces.`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.0-flash-exp',
+            contents: { parts: [{ text: hashtagPrompt }] },
+        });
+
+        let hashtags = response.text?.trim() || '#stash';
+        // Ensure hashtags start with #
+        hashtags = hashtags.split(/\s+/).map(tag => tag.startsWith('#') ? tag : `#${tag}`).join(' ');
+        generatedHashtags = hashtags;
+        hashtagsOutput.value = hashtags;
+    } catch (e) {
+        console.error(e);
+        alert('Failed to generate hashtags. Please try again.');
+    } finally {
+        generateHashtagsBtn.disabled = false;
+        generateHashtagsBtn.innerHTML = '<i class="material-icons">tag</i> <span>Generate Hashtags</span>';
+    }
+};
+
+// --- Calendar Functions ---
+const renderCalendar = () => {
+    if (calendarView === 'week') {
+        renderWeekView();
+    } else {
+        renderMonthView();
+    }
+};
+
+const renderWeekView = () => {
+    const startOfWeek = new Date(currentCalendarDate);
+    startOfWeek.setDate(currentCalendarDate.getDate() - currentCalendarDate.getDay());
+
+    calendarTitle.textContent = `${startOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+    calendarWeekGrid.innerHTML = '';
+
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(startOfWeek);
+        day.setDate(startOfWeek.getDate() + i);
+        const dayStr = day.toISOString().split('T')[0];
+
+        const dayCell = document.createElement('div');
+        dayCell.className = 'm3-card';
+        dayCell.style.minHeight = '150px';
+        dayCell.style.padding = 'var(--m3-gap-2)';
+        dayCell.style.cursor = 'pointer';
+
+        const isToday = dayStr === new Date().toISOString().split('T')[0];
+        if (isToday) {
+            dayCell.style.borderLeft = '4px solid var(--m3-primary)';
+        }
+
+        const postsForDay = scheduledPosts.filter(p => p.date.startsWith(dayStr));
+
+        dayCell.innerHTML = `
+            <div class="m3-title-sm" style="margin-bottom: 0.5rem; color: ${isToday ? 'var(--m3-primary)' : 'var(--m3-on-surface)'};">${day.getDate()}</div>
+            ${postsForDay.map(post => `
+                <div class="scheduled-post-item" data-post-id="${post.id}" style="background-color: var(--m3-primary-container); padding: 0.25rem; border-radius: var(--m3-shape-small); margin-bottom: 0.25rem; cursor: pointer;">
+                    <div style="width: 100%; aspect-ratio: ${post.format === 'square' ? '1/1' : post.format === 'story' ? '9/16' : post.format === 'portrait' ? '4/5' : '1.91/1'}; background-image: url(data:${post.imageMimeType};base64,${post.imageBase64}); background-size: cover; background-position: center; border-radius: var(--m3-shape-xs);"></div>
+                </div>
+            `).join('')}
+        `;
+
+        dayCell.onclick = (e) => {
+            const target = e.target as HTMLElement;
+            const postItem = target.closest('.scheduled-post-item') as HTMLElement;
+            if (postItem) {
+                const postId = parseInt(postItem.dataset.postId || '0', 10);
+                showScheduledPost(postId);
+            }
+        };
+
+        calendarWeekGrid.appendChild(dayCell);
+    }
+};
+
+const renderMonthView = () => {
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+
+    calendarTitle.textContent = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - startDate.getDay());
+
+    calendarMonthGrid.innerHTML = '';
+
+    for (let i = 0; i < 42; i++) {
+        const day = new Date(startDate);
+        day.setDate(startDate.getDate() + i);
+        const dayStr = day.toISOString().split('T')[0];
+
+        const dayCell = document.createElement('div');
+        dayCell.className = 'm3-card';
+        dayCell.style.minHeight = '100px';
+        dayCell.style.padding = 'var(--m3-gap-2)';
+        dayCell.style.opacity = day.getMonth() !== month ? '0.5' : '1';
+
+        const isToday = dayStr === new Date().toISOString().split('T')[0];
+        if (isToday) {
+            dayCell.style.borderLeft = '4px solid var(--m3-primary)';
+        }
+
+        const postsForDay = scheduledPosts.filter(p => p.date.startsWith(dayStr));
+
+        dayCell.innerHTML = `
+            <div class="m3-label-sm" style="margin-bottom: 0.25rem; color: ${isToday ? 'var(--m3-primary)' : 'var(--m3-on-surface)'};">${day.getDate()}</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 2px;">
+                ${postsForDay.slice(0, 3).map(post => `
+                    <div class="scheduled-post-dot" data-post-id="${post.id}" style="width: 8px; height: 8px; background-color: var(--m3-primary); border-radius: 50%; cursor: pointer;"></div>
+                `).join('')}
+                ${postsForDay.length > 3 ? `<span class="m3-label-xs" style="color: var(--m3-on-surface-variant);">+${postsForDay.length - 3}</span>` : ''}
+            </div>
+        `;
+
+        calendarMonthGrid.appendChild(dayCell);
+    }
+};
+
+const showScheduledPost = (postId: number) => {
+    const post = scheduledPosts.find(p => p.id === postId);
+    if (!post) return;
+
+    selectedScheduledPostId = postId;
+    scheduledImagePreview.style.backgroundImage = `url(data:${post.imageMimeType};base64,${post.imageBase64})`;
+    scheduledDateTime.value = post.date;
+    scheduledCaption.value = post.caption;
+    scheduledHashtags.value = post.hashtags;
+    scheduledContentDetails.style.display = 'block';
+    scheduledContentDetails.scrollIntoView({ behavior: 'smooth' });
+};
+
+const saveScheduledPost = () => {
+    if (selectedScheduledPostId === null) return;
+
+    const post = scheduledPosts.find(p => p.id === selectedScheduledPostId);
+    if (!post) return;
+
+    post.date = scheduledDateTime.value;
+    post.caption = scheduledCaption.value;
+    post.hashtags = scheduledHashtags.value;
+
+    saveScheduledPosts();
+    renderCalendar();
+    alert('Post updated successfully!');
+};
+
+const deleteScheduledPost = () => {
+    if (selectedScheduledPostId === null) return;
+
+    if (!confirm('Are you sure you want to delete this scheduled post?')) return;
+
+    scheduledPosts = scheduledPosts.filter(p => p.id !== selectedScheduledPostId);
+    selectedScheduledPostId = null;
+
+    saveScheduledPosts();
+    renderCalendar();
+    scheduledContentDetails.style.display = 'none';
+    alert('Post deleted successfully!');
+};
+
+const addToCalendar = () => {
+    if (!generatedImageBase64 || !generatedImageMimeType) {
+        alert('Please generate a design first.');
+        return;
+    }
+
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const dateStr = tomorrow.toISOString().slice(0, 16);
+
+    const newPost: ScheduledPost = {
+        id: Date.now(),
+        date: dateStr,
+        imageBase64: generatedImageBase64,
+        imageMimeType: generatedImageMimeType,
+        caption: captionOutput.value || '',
+        hashtags: hashtagsOutput.value || '',
+        format: selectedFormat,
+        category: selectedCategory
+    };
+
+    scheduledPosts.push(newPost);
+    saveScheduledPosts();
+
+    alert('Added to calendar! Switch to the Calendar tab to schedule it.');
+};
+
 // --- Event Handlers ---
 const handleImageUpload = async (file: File) => {
   if (!file.type.startsWith('image/')) {
@@ -616,25 +944,44 @@ const handleGenerateClick = async () => {
   if ('imageBase64' in result) {
       generatedImageBase64 = result.imageBase64;
       generatedImageMimeType = result.imageMimeType;
-      displayImage(generatedImageContainer, generatedImageBase64, generatedImageMimeType);
-      downloadBtn.classList.remove('hidden');
+      displayImage(instagramPreviewContainer, generatedImageBase64, generatedImageMimeType);
+      downloadAllBtn.classList.remove('hidden');
+      addToCalendarBtn.classList.remove('hidden');
   } else {
-      showError(generatedImageContainer, result.error);
-      downloadBtn.classList.add('hidden');
+      showError(instagramPreviewContainer, result.error);
+      downloadAllBtn.classList.add('hidden');
+      addToCalendarBtn.classList.add('hidden');
   }
-  
+
   updateLoadingState(false);
 };
 
 const handleDownloadClick = () => {
   if (generatedImageBase64 && generatedImageMimeType) {
-    const a = document.createElement('a');
-    a.href = `data:${generatedImageMimeType};base64,${generatedImageBase64}`;
+    // Download image
+    const imgLink = document.createElement('a');
+    imgLink.href = `data:${generatedImageMimeType};base64,${generatedImageBase64}`;
     const fileExtension = generatedImageMimeType.split('/')[1] || 'png';
-    a.download = `stash-ai-design.${fileExtension}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const timestamp = new Date().toISOString().split('T')[0];
+    imgLink.download = `stash-instagram-${selectedFormat}-${timestamp}.${fileExtension}`;
+    document.body.appendChild(imgLink);
+    imgLink.click();
+    document.body.removeChild(imgLink);
+
+    // Download caption & hashtags as text file
+    if (captionOutput.value || hashtagsOutput.value) {
+      const textContent = `STASH INSTAGRAM POST\n\nCaption:\n${captionOutput.value}\n\nHashtags:\n${hashtagsOutput.value}\n\nFormat: ${selectedFormat}\nCategory: ${selectedCategory}\nDate: ${new Date().toLocaleString()}`;
+      const textBlob = new Blob([textContent], { type: 'text/plain' });
+      const textLink = document.createElement('a');
+      textLink.href = URL.createObjectURL(textBlob);
+      textLink.download = `stash-instagram-content-${timestamp}.txt`;
+      document.body.appendChild(textLink);
+      textLink.click();
+      document.body.removeChild(textLink);
+      URL.revokeObjectURL(textLink.href);
+    }
+
+    alert('Downloaded successfully!');
   }
 };
 
@@ -815,13 +1162,14 @@ const runDailyAutomation = async () => {
 // --- Event Listeners Setup ---
 const pages = {
   'design-studio': { page: designStudioPage, button: navDesignStudio },
+  'calendar': { page: calendarPage, button: navCalendar },
   'brand-kit': { page: brandKitPage, button: navBrandKit },
   'automation': { page: automationPage, button: navAutomation },
 };
 
 const navigateTo = (pageKey: keyof typeof pages) => {
-  const navButtons = [navDesignStudio, navBrandKit, navAutomation];
-  
+  const navButtons = [navDesignStudio, navCalendar, navBrandKit, navAutomation];
+
   Object.values(pages).forEach(({ page }) => page.classList.remove('active'));
   navButtons.forEach(btn => btn.classList.remove('active-tab'));
 
@@ -830,11 +1178,25 @@ const navigateTo = (pageKey: keyof typeof pages) => {
 
    if (pageKey === 'design-studio') {
         renderSelectableLogos();
+    } else if (pageKey === 'calendar') {
+        renderCalendar();
     }
 };
 
 
 // Design Studio Listeners
+formatButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const format = btn.dataset.format || 'square';
+        const ratio = btn.dataset.ratio || '1/1';
+        handleFormatSelection(format, ratio);
+    });
+});
+
+categorySelect.addEventListener('change', () => {
+    selectedCategory = categorySelect.value;
+});
+
 imageUploadArea.addEventListener('click', () => imageUploadInput.click());
 imageUploadArea.addEventListener('dragover', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'var(--m3-surface-variant)'; });
 imageUploadArea.addEventListener('dragleave', (e) => { e.preventDefault(); imageUploadArea.style.backgroundColor = 'transparent'; });
@@ -848,7 +1210,10 @@ imageUploadInput.addEventListener('change', (e) => {
   if (target.files?.[0]) handleImageUpload(target.files[0]);
 });
 generateBtn.addEventListener('click', handleGenerateClick);
-downloadBtn.addEventListener('click', handleDownloadClick);
+generateCaptionBtn.addEventListener('click', generateCaption);
+generateHashtagsBtn.addEventListener('click', generateHashtags);
+downloadAllBtn.addEventListener('click', handleDownloadClick);
+addToCalendarBtn.addEventListener('click', addToCalendar);
 
 // Brand Kit Listeners
 saveGuidelinesBtn.addEventListener('click', () => {
@@ -922,6 +1287,158 @@ saveTemplateBtn.addEventListener('click', handleSaveTemplate);
 templateSearchInput.addEventListener('input', renderTemplateList);
 
 
+// Calendar Listeners
+calendarViewWeekBtn.addEventListener('click', () => {
+    calendarView = 'week';
+    calendarViewWeekBtn.classList.add('active');
+    calendarViewMonthBtn.classList.remove('active');
+    calendarWeekView.style.display = 'block';
+    calendarMonthView.style.display = 'none';
+    renderCalendar();
+});
+
+calendarViewMonthBtn.addEventListener('click', () => {
+    calendarView = 'month';
+    calendarViewMonthBtn.classList.add('active');
+    calendarViewWeekBtn.classList.remove('active');
+    calendarWeekView.style.display = 'none';
+    calendarMonthView.style.display = 'block';
+    renderCalendar();
+});
+
+calendarPrevBtn.addEventListener('click', () => {
+    if (calendarView === 'week') {
+        currentCalendarDate.setDate(currentCalendarDate.getDate() - 7);
+    } else {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+    }
+    renderCalendar();
+});
+
+calendarNextBtn.addEventListener('click', () => {
+    if (calendarView === 'week') {
+        currentCalendarDate.setDate(currentCalendarDate.getDate() + 7);
+    } else {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+    }
+    renderCalendar();
+});
+
+batchGenerateBtn.addEventListener('click', () => {
+    // Populate template options
+    batchTemplateSelect.innerHTML = '<option value="">Select a template...</option>';
+    brandKit.templates.forEach(template => {
+        const option = document.createElement('option');
+        option.value = template.id.toString();
+        option.textContent = template.name;
+        batchTemplateSelect.appendChild(option);
+    });
+    batchModal.setAttribute('open', '');
+});
+
+closeBatchModalBtn.addEventListener('click', () => {
+    batchModal.removeAttribute('open');
+});
+
+startBatchBtn.addEventListener('click', async () => {
+    const days = parseInt(batchDaysInput.value, 10);
+    const templateId = parseInt(batchTemplateSelect.value, 10);
+    const format = batchFormatSelect.value;
+
+    if (!templateId || !days) {
+        alert('Please select a template and number of days.');
+        return;
+    }
+
+    const template = brandKit.templates.find(t => t.id === templateId);
+    if (!template || brandKit.products.length === 0) {
+        alert('Template or products not found.');
+        return;
+    }
+
+    startBatchBtn.disabled = true;
+    batchProgress.style.display = 'block';
+
+    const startDate = new Date();
+    for (let i = 0; i < days; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+        const dateStr = currentDate.toISOString().slice(0, 16);
+
+        // Select product for this day
+        const product = brandKit.products[i % brandKit.products.length];
+
+        // Generate dynamic prompt
+        const dynamicPrompt = template.prompt
+            .replace(/\[PRODUCT_NAME\]/g, product.name)
+            .replace(/\[PRODUCT_DESCRIPTION\]/g, product.description)
+            .replace(/\[DATE\]/g, currentDate.toLocaleDateString())
+            .replace(/\[DAY_OF_WEEK\]/g, currentDate.toLocaleDateString('en-US', { weekday: 'long' }));
+
+        // Build full prompt
+        const promptParts = [];
+        if (brandKit.guidelines) promptParts.push(`Style Guidelines: """${brandKit.guidelines}"""`);
+        if (brandKit.colors.length > 0) {
+            promptParts.push(`Brand Colors: Use ONLY the following colors: ${brandKit.colors.join(', ')}.`);
+        }
+        promptParts.push(`User Request: """${dynamicPrompt}"""`);
+        const finalPrompt = promptParts.join('\n\n');
+
+        // Generate image
+        const result = await performGeneration(finalPrompt, { data: product.imageBase64, mimeType: product.imageMimeType });
+
+        if ('imageBase64' in result) {
+            // Generate caption
+            const captionPrompt = `Create an engaging Instagram caption for a product post about ${product.name}. Keep it concise (100-150 characters), include a call-to-action, and match the Stash brand voice.`;
+            const captionResponse = await ai.models.generateContent({
+                model: 'gemini-2.0-flash-exp',
+                contents: { parts: [{ text: captionPrompt }] },
+            });
+            const caption = captionResponse.text?.trim() || 'Check out our latest!';
+
+            // Generate hashtags
+            const hashtagPrompt = `Generate 15 relevant Instagram hashtags for a post about ${product.name}. Include #stash. Return only hashtags separated by spaces.`;
+            const hashtagResponse = await ai.models.generateContent({
+                model: 'gemini-2.0-flash-exp',
+                contents: { parts: [{ text: hashtagPrompt }] },
+            });
+            let hashtags = hashtagResponse.text?.trim() || '#stash';
+            hashtags = hashtags.split(/\s+/).map(tag => tag.startsWith('#') ? tag : `#${tag}`).join(' ');
+
+            // Add to calendar
+            scheduledPosts.push({
+                id: Date.now() + i,
+                date: dateStr,
+                imageBase64: result.imageBase64,
+                imageMimeType: result.imageMimeType,
+                caption,
+                hashtags,
+                format,
+                category: 'product'
+            });
+        }
+
+        // Update progress
+        const progress = Math.round(((i + 1) / days) * 100);
+        batchProgressBar.style.width = `${progress}%`;
+        batchProgressText.textContent = `${progress}%`;
+    }
+
+    saveScheduledPosts();
+    alert(`Generated ${days} posts successfully!`);
+
+    batchModal.removeAttribute('open');
+    batchProgress.style.display = 'none';
+    batchProgressBar.style.width = '0%';
+    batchProgressText.textContent = '0%';
+    startBatchBtn.disabled = false;
+
+    navigateTo('calendar');
+});
+
+saveScheduledBtn.addEventListener('click', saveScheduledPost);
+deleteScheduledBtn.addEventListener('click', deleteScheduledPost);
+
 // Automation Listeners
 automationToggleBtn.addEventListener('click', () => {
     automationState.enabled = !automationState.enabled;
@@ -957,6 +1474,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navigation Listeners
     navDesignStudio.addEventListener('click', () => navigateTo('design-studio'));
+    navCalendar.addEventListener('click', () => navigateTo('calendar'));
     navBrandKit.addEventListener('click', () => navigateTo('brand-kit'));
     navAutomation.addEventListener('click', () => navigateTo('automation'));
 
@@ -964,6 +1482,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBrandKit();
     loadAutomationState();
     loadAutomationHistory();
+    loadScheduledPosts();
 
     renderBrandKitUI();
     renderAutomationUI();
