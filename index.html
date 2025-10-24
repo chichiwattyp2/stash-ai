@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stash AI Design Agent</title>
+    <title>Stash Instagram Content Studio</title>
     <!-- New M3 Stylesheet -->
     <link rel="stylesheet" href="index.css" />
     
@@ -42,6 +42,10 @@
             <i class="material-icons">palette</i>
             <span>Design Studio</span>
         </button>
+        <button id="nav-calendar" class="m3-btn m3-btn--text m3-state" role="tab" aria-selected="false">
+            <i class="material-icons">calendar_month</i>
+            <span>Content Calendar</span>
+        </button>
         <button id="nav-brand-kit" class="m3-btn m3-btn--text m3-state" role="tab" aria-selected="false">
             <i class="material-icons">style</i>
             <span>Brand Kit</span>
@@ -60,7 +64,48 @@
                 <div class="col">
                     <div class="m3-card" style="display: flex; flex-direction: column; gap: var(--m3-gap-5); flex-grow: 1;">
                         <div>
-                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">1. Upload Image</h2>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">1. Instagram Format</h2>
+                            <div id="format-selector" class="grid grid-cols-4" style="margin-top: var(--m3-gap-3); gap: var(--m3-gap-2);">
+                                <button class="format-btn m3-card m3-state active" data-format="square" data-ratio="1/1" style="padding: var(--m3-gap-3); text-align: center; cursor: pointer; border: 2px solid var(--m3-primary);">
+                                    <i class="material-icons" style="font-size: 2rem;">crop_square</i>
+                                    <p class="m3-label-sm" style="margin-top: 0.25rem;">Square</p>
+                                    <p class="m3-label-xs" style="color: var(--m3-on-surface-variant);">1:1</p>
+                                </button>
+                                <button class="format-btn m3-card m3-state" data-format="story" data-ratio="9/16" style="padding: var(--m3-gap-3); text-align: center; cursor: pointer; border: 2px solid transparent;">
+                                    <i class="material-icons" style="font-size: 2rem;">crop_portrait</i>
+                                    <p class="m3-label-sm" style="margin-top: 0.25rem;">Story</p>
+                                    <p class="m3-label-xs" style="color: var(--m3-on-surface-variant);">9:16</p>
+                                </button>
+                                <button class="format-btn m3-card m3-state" data-format="portrait" data-ratio="4/5" style="padding: var(--m3-gap-3); text-align: center; cursor: pointer; border: 2px solid transparent;">
+                                    <i class="material-icons" style="font-size: 2rem;">crop_5_4</i>
+                                    <p class="m3-label-sm" style="margin-top: 0.25rem;">Portrait</p>
+                                    <p class="m3-label-xs" style="color: var(--m3-on-surface-variant);">4:5</p>
+                                </button>
+                                <button class="format-btn m3-card m3-state" data-format="landscape" data-ratio="1.91/1" style="padding: var(--m3-gap-3); text-align: center; cursor: pointer; border: 2px solid transparent;">
+                                    <i class="material-icons" style="font-size: 2rem;">crop_landscape</i>
+                                    <p class="m3-label-sm" style="margin-top: 0.25rem;">Landscape</p>
+                                    <p class="m3-label-xs" style="color: var(--m3-on-surface-variant);">1.91:1</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">2. Content Category</h2>
+                            <div class="m3-field" style="margin-top: var(--m3-gap-3);">
+                                <label for="category-select">Choose a content type</label>
+                                <select id="category-select">
+                                    <option value="product">Product Showcase</option>
+                                    <option value="promo">Promotion/Sale</option>
+                                    <option value="quote">Quote/Tip</option>
+                                    <option value="bts">Behind the Scenes</option>
+                                    <option value="ugc">User Generated Content</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">3. Upload Image</h2>
                             <div id="image-upload-area" style="border: 2px dashed var(--m3-outline); padding: 2rem; text-align: center; border-radius: var(--m3-shape-large); cursor: pointer; transition: background-color 0.2s ease; margin-top: var(--m3-gap-3);">
                                 <i class="fas fa-cloud-arrow-up" style="font-size: 2.5rem; color: var(--m3-outline); margin-bottom: 1rem;"></i>
                                 <p class="m3-body-lg" style="color: var(--m3-on-surface-variant);">Drag & drop or click to upload</p>
@@ -69,15 +114,15 @@
                         </div>
 
                         <div>
-                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">2. Describe Your Design</h2>
+                            <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">4. Design Instructions</h2>
                             <div class="m3-field" style="margin-top: var(--m3-gap-3);">
                                 <label for="prompt-input">e.g., add a '50% Off' sale banner...</label>
-                                <textarea id="prompt-input" rows="4"></textarea>
+                                <textarea id="prompt-input" rows="3"></textarea>
                             </div>
                         </div>
 
                         <div>
-                             <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">3. Add a Logo</h2>
+                             <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">5. Add Logo (Optional)</h2>
                              <div id="logo-selection-container" class="grid grid-cols-4" style="background-color: var(--m3-surface-variant); padding: var(--m3-gap-2); border-radius: var(--m3-shape-large); margin-top: var(--m3-gap-3);">
                                 <!-- Logos injected here -->
                             </div>
@@ -85,29 +130,163 @@
 
                         <button id="generate-btn" class="m3-btn m3-btn--filled m3-state" style="width: 100%; padding: 12px 0;">
                             <i class="material-icons">auto_awesome</i>
-                            <span id="generate-btn-text">Generate Design</span>
+                            <span id="generate-btn-text">Generate Instagram Content</span>
                             <span id="generate-spinner" class="hidden"><i class="fas fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Image Display -->
+                <!-- Preview & Content Generation -->
                 <div class="col">
                     <div class="m3-card">
-                        <h2 class="m3-headline-sm" style="text-align: center; color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">Original Image</h2>
-                        <div id="original-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium);">
-                            <span style="color: var(--m3-on-surface-variant);">Upload an image to start</span>
+                        <h2 class="m3-headline-sm" style="text-align: center; color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">Instagram Preview</h2>
+
+                        <!-- Instagram Preview Container -->
+                        <div style="background: linear-gradient(to bottom, #833AB4, #FD1D1D, #F77737); padding: 1.5rem; border-radius: var(--m3-shape-large);">
+                            <div style="background: var(--m3-surface); padding: 1rem; border-radius: var(--m3-shape-medium);">
+                                <!-- IG Header -->
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--m3-outline-variant);">
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);"></div>
+                                    <span class="m3-title-sm">stash</span>
+                                </div>
+
+                                <!-- Image Container with Dynamic Aspect Ratio -->
+                                <div id="instagram-preview-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-small); margin-bottom: 0.75rem;">
+                                    <span style="color: var(--m3-on-surface-variant); font-size: 0.875rem;">Your design will appear here</span>
+                                </div>
+
+                                <!-- IG Actions -->
+                                <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                                    <i class="material-icons" style="color: var(--m3-on-surface);">favorite_border</i>
+                                    <i class="material-icons" style="color: var(--m3-on-surface);">chat_bubble_outline</i>
+                                    <i class="material-icons" style="color: var(--m3-on-surface);">send</i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Caption & Hashtags -->
                     <div class="m3-card">
-                        <h2 class="m3-headline-sm" style="text-align: center; color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">AI Generated Design</h2>
-                         <div id="generated-image-container" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium);">
-                            <span style="color: var(--m3-on-surface-variant);">Your AI design will appear here</span>
+                        <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant); margin-bottom: var(--m3-gap-4);">Caption & Hashtags</h2>
+
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                            <label for="caption-output">Caption</label>
+                            <textarea id="caption-output" rows="4" placeholder="AI-generated caption will appear here..."></textarea>
                         </div>
-                        <button id="download-btn" class="m3-btn m3-btn--filled m3-state hidden" style="width: 100%; margin-top: var(--m3-gap-4);">
-                            <i class="material-icons">download</i>
-                            <span>Download Image</span>
+
+                        <button id="generate-caption-btn" class="m3-btn m3-btn--outlined m3-state" style="width: 100%; margin-bottom: var(--m3-gap-4);">
+                            <i class="material-icons">text_fields</i>
+                            <span>Generate Caption</span>
                         </button>
+
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                            <label for="hashtags-output">Hashtags</label>
+                            <textarea id="hashtags-output" rows="3" placeholder="AI-generated hashtags will appear here..."></textarea>
+                        </div>
+
+                        <button id="generate-hashtags-btn" class="m3-btn m3-btn--outlined m3-state" style="width: 100%; margin-bottom: var(--m3-gap-4);">
+                            <i class="material-icons">tag</i>
+                            <span>Generate Hashtags</span>
+                        </button>
+
+                        <div style="display: flex; gap: var(--m3-gap-2);">
+                            <button id="download-all-btn" class="m3-btn m3-btn--filled m3-state hidden" style="flex: 1;">
+                                <i class="material-icons">download</i>
+                                <span>Download All</span>
+                            </button>
+                            <button id="add-to-calendar-btn" class="m3-btn m3-btn--outlined m3-state hidden" style="flex: 1;">
+                                <i class="material-icons">event</i>
+                                <span>Add to Calendar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Calendar Page -->
+        <section id="calendar-page" class="page">
+            <div class="m3-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--m3-gap-4);">
+                    <h2 class="m3-headline-sm" style="color: var(--m3-on-surface-variant);">Content Calendar</h2>
+                    <div style="display: flex; gap: var(--m3-gap-2);">
+                        <button id="calendar-view-week" class="m3-btn m3-btn--outlined m3-state active">Week</button>
+                        <button id="calendar-view-month" class="m3-btn m3-btn--outlined m3-state">Month</button>
+                        <button id="batch-generate-btn" class="m3-btn m3-btn--filled m3-state">
+                            <i class="material-icons">auto_awesome</i>
+                            <span>Batch Generate</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Calendar Navigation -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--m3-gap-4);">
+                    <button id="calendar-prev" class="m3-icon-btn m3-state">
+                        <i class="material-icons">chevron_left</i>
+                    </button>
+                    <h3 id="calendar-title" class="m3-title-lg"></h3>
+                    <button id="calendar-next" class="m3-icon-btn m3-state">
+                        <i class="material-icons">chevron_right</i>
+                    </button>
+                </div>
+
+                <!-- Week View -->
+                <div id="calendar-week-view" class="calendar-view active">
+                    <div class="grid grid-cols-7" style="gap: var(--m3-gap-2); margin-bottom: 1rem;">
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Sun</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Mon</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Tue</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Wed</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Thu</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Fri</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Sat</div>
+                    </div>
+                    <div id="calendar-week-grid" class="grid grid-cols-7" style="gap: var(--m3-gap-2);">
+                        <!-- Week days injected here -->
+                    </div>
+                </div>
+
+                <!-- Month View -->
+                <div id="calendar-month-view" class="calendar-view" style="display: none;">
+                    <div class="grid grid-cols-7" style="gap: var(--m3-gap-2); margin-bottom: 1rem;">
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Sun</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Mon</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Tue</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Wed</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Thu</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Fri</div>
+                        <div class="m3-label-sm" style="text-align: center; color: var(--m3-on-surface-variant);">Sat</div>
+                    </div>
+                    <div id="calendar-month-grid" class="grid grid-cols-7" style="gap: var(--m3-gap-2);">
+                        <!-- Month days injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scheduled Content Details -->
+            <div class="m3-card" id="scheduled-content-details" style="display: none;">
+                <h3 class="m3-title-lg" style="margin-bottom: var(--m3-gap-4);">Scheduled Post</h3>
+                <div class="row">
+                    <div class="col">
+                        <div id="scheduled-image-preview" style="aspect-ratio: 1/1; background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-medium); background-size: cover; background-position: center;"></div>
+                    </div>
+                    <div class="col">
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-3);">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" id="scheduled-datetime" class="m3-field">
+                        </div>
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-3);">
+                            <label>Caption</label>
+                            <textarea id="scheduled-caption" rows="4"></textarea>
+                        </div>
+                        <div class="m3-field" style="margin-bottom: var(--m3-gap-3);">
+                            <label>Hashtags</label>
+                            <textarea id="scheduled-hashtags" rows="2"></textarea>
+                        </div>
+                        <div style="display: flex; gap: var(--m3-gap-2);">
+                            <button id="save-scheduled-btn" class="m3-btn m3-btn--filled m3-state" style="flex: 1;">Save</button>
+                            <button id="delete-scheduled-btn" class="m3-btn m3-btn--outlined m3-state" style="flex: 1; color: var(--m3-error);">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,6 +432,48 @@
                 <div class="m3-dialog-actions">
                     <button id="save-template-btn" type="button" class="m3-btn m3-btn--filled m3-state">
                         <span>Save Template</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Generation Modal -->
+        <div id="batch-modal" class="m3-dialog-backdrop">
+            <div class="m3-dialog" role="alertdialog" aria-modal="true" aria-labelledby="batch-dialog-title">
+                <div class="m3-dialog-header">
+                    <h2 class="m3-title-lg" id="batch-modal-title">Batch Generate Content</h2>
+                    <button id="close-batch-modal-btn" class="m3-icon-btn m3-state"><i class="material-icons">close</i></button>
+                </div>
+                <div class="m3-dialog-content">
+                    <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                        <label for="batch-days-input">Number of Days</label>
+                        <input id="batch-days-input" type="number" min="1" max="30" value="7">
+                    </div>
+                    <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                        <label for="batch-template-select">Template</label>
+                        <select id="batch-template-select">
+                            <option value="">Select a template...</option>
+                        </select>
+                    </div>
+                    <div class="m3-field" style="margin-bottom: var(--m3-gap-4);">
+                        <label for="batch-format-select">Instagram Format</label>
+                        <select id="batch-format-select">
+                            <option value="square">Square (1:1)</option>
+                            <option value="story">Story (9:16)</option>
+                            <option value="portrait">Portrait (4:5)</option>
+                            <option value="landscape">Landscape (1.91:1)</option>
+                        </select>
+                    </div>
+                    <div id="batch-progress" style="display: none; margin-top: var(--m3-gap-4);">
+                        <div style="background-color: var(--m3-surface-variant); border-radius: var(--m3-shape-full); height: 8px; overflow: hidden;">
+                            <div id="batch-progress-bar" style="background-color: var(--m3-primary); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                        </div>
+                        <p id="batch-progress-text" class="m3-body-sm" style="text-align: center; margin-top: 0.5rem; color: var(--m3-on-surface-variant);">0%</p>
+                    </div>
+                </div>
+                <div class="m3-dialog-actions">
+                    <button id="start-batch-btn" type="button" class="m3-btn m3-btn--filled m3-state">
+                        <span>Start Generation</span>
                     </button>
                 </div>
             </div>
